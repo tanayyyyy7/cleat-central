@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node -r dotenv/config --watch app.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^8.6.1",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2"
+  },
+  "keywords": [],
+  "author": "tanay",
+  "license": "ISC"
+}

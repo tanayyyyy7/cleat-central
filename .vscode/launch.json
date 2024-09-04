@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "Run Application",
+      "name": "Run Frontend",
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "npm",
@@ -11,6 +11,23 @@
         "dev"
       ],
       "cwd": "${workspaceFolder}/frontend/"
+    },
+    {
+      "name": "Run Backend",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "${workspaceFolder}/backend"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run Full Stack",
+      "configurations": ["Run Frontend", "Run Backend"]
     }
   ]
 }
