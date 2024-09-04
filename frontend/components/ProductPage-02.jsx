@@ -9,15 +9,17 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, Heart, ShoppingBag, ChevronDown, Menu, SlidersHorizontal, X } from 'lucide-react'
-import { ModeToggle } from "@/components/mode-toggle"
-import NavBar from './NavBar'
+import NavBar from './NavBar';
+import productData from './products-data';
 
 export default function ProductsPage02() {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+  const products = productData.group;
+
   const FilterContent = () => (
-  <ScrollArea className="h-[calc(100vh-4rem)]">
+  <ScrollArea className="h-[calc(100vh-4rem)] ">
       <div className="space-y-4 p-4">
         <div>
           <Label className="block mb-2">Keywords</Label>
@@ -73,7 +75,7 @@ export default function ProductsPage02() {
         <div>
           <Label className="block mb-2">Brands</Label>
           <div className="space-y-2">
-            {['Nike','Adidas', 'Puma', 'New Balance'].map((size, index) => (
+            {['Nike','Adidas', 'Puma', 'New Balance', 'Umbro'].map((size, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <Checkbox id={`size${index}`} />
                 <label htmlFor={`size${index}`} className="text-sm">
@@ -93,41 +95,6 @@ export default function ProductsPage02() {
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-50 border-b bg-background px-4">
         <NavBar />
-        {/* <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <NikeLogo width={60} height={24} className="w-12 h-auto" />
-            <nav className="hidden md:flex space-x-4">
-              <a href="#" className="text-sm hover:underline">New & Featured</a>
-              <a href="#" className="text-sm hover:underline">Men</a>
-              <a href="#" className="text-sm hover:underline">Women</a>
-              <a href="#" className="text-sm hover:underline">Kids</a>
-              <a href="#" className="text-sm hover:underline">Sale</a>
-              <a href="#" className="text-sm hover:underline">Customise</a>
-              <a href="#" className="text-sm hover:underline">SNKRS</a>
-            </nav>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative hidden md:block">
-              <Input type="search" placeholder="Search" className="pl-8 pr-4 py-2 rounded-full bg-muted" />
-              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
-            </div>
-            <ModeToggle />
-            <ShoppingBag size={24} />
-            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu size={24} />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                <div className="flex justify-between items-center mb-6">
-                  <NikeLogo width={60} height={24} className="w-12 h-auto" />
-                </div>
-                <MenuContent />
-              </SheetContent>
-            </Sheet>
-          </div>
-        </div> */}
       </header>
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
@@ -168,7 +135,6 @@ export default function ProductsPage02() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <Card key={idx} className="flex flex-col items-center p-4">
-                  {/* <div className="w-full h-48 bg-muted rounded-md mb-4" /> */}
                   <img className="w-full h-auto bg-muted rounded-md mb-4" src='https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/b556ec75-0fb1-481d-ae46-9a0440accc73/ZOOM+SUPERFLY+9+ELITE+FG+SE.png' />
                   <div className="text-center">
                     <p className="font-semibold">Nike Product</p>

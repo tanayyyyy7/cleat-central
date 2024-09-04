@@ -12,13 +12,10 @@ import { ModeToggle } from "@/components/mode-toggle"
 
 const MenuContent = () => (
     <div className="space-y-4">
-      <a href="#" className="block text-lg hover:underline">New & Featured</a>
-      <a href="#" className="block text-lg hover:underline">Men</a>
-      <a href="#" className="block text-lg hover:underline">Women</a>
-      <a href="#" className="block text-lg hover:underline">Kids</a>
-      <a href="#" className="block text-lg hover:underline">Sale</a>
-      <a href="#" className="block text-lg hover:underline">Customise</a>
-      <a href="#" className="block text-lg hover:underline">SNKRS</a>
+      <a href="#" className="block text-lg hover:underline">Home</a>
+      <a href="#" className="block text-lg hover:underline">Catalogue</a>
+      <a href="#" className="block text-lg hover:underline">Blog</a>
+      <a href="#" className="block text-lg hover:underline">Contact Us</a>
     </div>
   )
   
@@ -30,13 +27,10 @@ export default function NavBar() {
             <div className="flex items-center space-x-4">
                 <NikeLogo width={60} height={24} className="w-12 h-auto" />
                 <nav className="hidden md:flex space-x-4">
-                    <a href="#" className="text-sm hover:underline">New & Featured</a>
-                    <a href="#" className="text-sm hover:underline">Men</a>
-                    <a href="#" className="text-sm hover:underline">Women</a>
-                    <a href="#" className="text-sm hover:underline">Kids</a>
-                    <a href="#" className="text-sm hover:underline">Sale</a>
-                    <a href="#" className="text-sm hover:underline">Customise</a>
-                    <a href="#" className="text-sm hover:underline">SNKRS</a>
+                    <a href="#" className="text-md hover:underline">Home</a>
+                    <a href="#" className="text-md hover:underline">Catalogue</a>
+                    <a href="#" className="text-md hover:underline">Blog</a>
+                    <a href="#" className="text-md hover:underline">Contact Us</a>
                 </nav>
             </div>
             <div className="flex items-center space-x-4">

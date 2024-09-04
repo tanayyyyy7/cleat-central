@@ -9,6 +9,8 @@ import UserSignUp from "./components/UserSignUp";
 import AuthProvider from './components/AuthContext'; 
 import ProductsPage from "./components/ProductsPage";
 import ProductsPage02 from "./components/ProductPage-02";
+import ProductDetails from "./components/ProductDetails";
+
 export default function App() {
   const navigate = useNavigate();
  
@@ -24,6 +26,7 @@ export default function App() {
         <Route path="/user-signup" element={<UserSignUp />} />
         <Route path="/products-page" element={<ProductsPage />} />
         <Route path="/products-page-02" element={<ProductsPage02 />} />
+        <Route path="/product-details" element={<ProductDetails />} />
         {/* Add more routes as needed */}
       </Routes>
     </NextUIProvider>
