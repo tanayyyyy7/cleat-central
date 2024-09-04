@@ -11,40 +11,30 @@ import api from './routes/api/index.js';
 import connectToDB from './db/index.js';
 
 const app = express();
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const logFile = join(__dirname, 'server.log');
 
 app.use(compression());
-app.use('/assets', express.static(join(__dirname, 'public')));
+
+app.use(express.static(join(__dirname, '../frontend/dist'))); // Serve the built static files of the React app
+app.use('/assets', express.static(join(__dirname, '../frontend/assets')));
+
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(
-  '/admin',
-  session({
-    name: 'sessId',
-    secret: app.get('env') === 'production' ? process.env.sessionSecret : '2bb375d5abe58776bbf28695',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: app.get('env') === 'production' ? true : false,
-      httpOnly: true,
-      maxAge: 18000000, // 5 hours
-    },
-  })
-);
+app.use(express.json()); 
+
+// Handle all other routes and return the React app
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, '../frontend/dist', 'index.html'));
+});
+
+//Implementing FIle Logger
 app.use(morgan(':method - :url - :date - :response-time ms'));
 app.use(
   morgan(':method - :url - :date - :response-time ms', {
     stream: createWriteStream(logFile, { flags: 'a' }),
   })
 );
-
-app.set('view engine', 'pug');
-
-app.use('/', home);
-app.use('/admin', admin);
-app.use('/api', api);
-
 
 
 Promise.resolve(connectToDB()).then(() => {
