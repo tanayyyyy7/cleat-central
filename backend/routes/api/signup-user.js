@@ -1,4 +1,4 @@
-import { signUpUser } from "../../controllers/user";
+import { signUpUser } from "../../controllers/user.js";
 
 export default async (req, res) => {
   try{
@@ -8,5 +8,4 @@ export default async (req, res) => {
   }catch(error){
     res.status(400).json({ error });
   }
-
 };

@@ -5,7 +5,6 @@ import { createWriteStream } from 'fs';
 import morgan from 'morgan';
 import session from 'express-session';
 import compression from 'compression';
-import home from './routes/home/index.js';
 import admin from './routes/admin/index.js';
 import api from './routes/api/index.js';
 import connectToDB from './db/index.js';
@@ -22,6 +21,8 @@ app.use('/assets', express.static(join(__dirname, '../frontend/assets')));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); 
+
+app.use('/api', api);
 
 // Handle all other routes and return the React app
 app.get('*', (req, res) => {

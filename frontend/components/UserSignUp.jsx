@@ -1,37 +1,53 @@
-
-import { useState } from 'react';
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import GoogleSignIn from "./GoogleSignIn";
+import { useState } from 'react';
+import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading } from "react-icons/ai";
-import { app } from "../firebase.config";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { useAuth } from './AuthContext';
-
-const auth = getAuth(app);
 
 export default function UserSignUp() {
-  const { setUid } = useAuth(); 
+
   const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null); 
   const navigate = useNavigate(); 
 
-  async function onSubmit
-(event) {
+
+
+  async function onSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
     setError(null); 
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      setUid(user.uid);
-      navigate('/teacher-dashboard'); // Redirect after successful signup
+      // Make an HTTP request to the signup API endpoint
+      const response = await fetch('/api/signup-user/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      if (response.ok) {
+        const { user, token } = await response.json();
+        console.log(token);
+        navigate('/products-page-02'); // Redirect after successful signup
+      } else {
+        const { error } = await response.json();
+        setError(error);
+      }
     } catch (error) {
       setError(error.message); 
     } finally {
@@ -39,44 +55,76 @@ export default function UserSignUp() {
     }
   }
 
+
   return (
-    <div>
-      <h2>Sign Up</h2>
-      {error && <p className="text-red-500">{error}</p>} 
-      <form onSubmit={onSubmit}>
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input 
-            type="email" 
-            id="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
-          />
-        </div>
-        <div>
-          <Label htmlFor="password">Password</Label>
-          <Input 
-            type="password" 
-            id
-="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
-        </div>
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? <AiOutlineLoading className="animate-spin" /> : "Sign Up"}
-        </Button>
-      </form>
-      <p>Or sign up with Google:</p>
-      <GoogleSignIn
-                onLoginSuccess={(user) => {
-                  // Handle Google sign-in success (e.g., redirect)
-                  console.log("Google User signed in:", user);
-                  navigate("/student-dashboard");
-                }}
+    <Card className="mx-auto max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-xl">Sign Up</CardTitle>
+        <CardDescription>
+          Enter your information to create an account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {error && <p className="text-red-500">{error}</p>}
+        <form onSubmit={onSubmit} className="grid gap-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="first-name">First name</Label>
+              <Input 
+                id="first-name" 
+                placeholder="Max" 
+                required 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
-    </div>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="last-name">Last name</Label>
+              <Input 
+                id="last-name" 
+                placeholder="Robinson" 
+                required 
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input 
+              id="password" 
+              type="password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? <AiOutlineLoading className="animate-spin" /> : "Create an account"}
+          </Button>
+          {/* Remove or adjust the GitHub button as needed */}
+          {/* <GoogleSignIn
+          onLoginSuccess={(user) => {
+            console.log("Google User signed in:", user);
+          }} /> */}
+        </form>
+        <div className="mt-4 text-center text-sm">
+          Already have an account?{" "}
+          <a href="/user-auth" className="underline">
+            Sign in
+          </a>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

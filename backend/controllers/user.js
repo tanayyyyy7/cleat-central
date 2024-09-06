@@ -8,6 +8,12 @@ const sign = obj => new Promise((resolve, reject) => {
         return resolve(token);
     });
 });
+const verify = token => new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.jwtPrivateKey, error => {
+        if (err) return reject(err);
+        return resolve();
+    });
+});
 
 export const signUpUser = async ({ name, email, password }) => {
     try {
@@ -50,6 +56,23 @@ export const loginUser = async ({ email, password }) => {
             }
         });
     } catch (error) {
+        return Promise.reject({ error });
+    }
+}
+
+export const verifyToken = async ({ token }) => {
+    try{
+        const user = jwt.decode(token);
+        const findUser = await User.findOne({ email: user.email});
+        if(!findUser) {
+            return Promise.reject({ error: "Unauthorized"});
+        }
+
+        //Verify Token and resolve
+        await verify(token);
+        return Promise.resolve();
+
+    }catch (error) {
         return Promise.reject({ error });
     }
 }
