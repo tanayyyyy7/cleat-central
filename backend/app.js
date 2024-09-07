@@ -22,6 +22,7 @@ app.use('/assets', express.static(join(__dirname, '../frontend/assets')));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); 
 
+
 app.use('/api', api);
 
 // Handle all other routes and return the React app

@@ -1,5 +1,4 @@
-const productData = {
-    "product": [
+const productData = [
       { 
         "name": "Nike Mercurial Superfly 10 Elite Electric",
         "original-link": "https://www.nike.com/in/t/mercurial-superfly-10-elite-electric-fg-high-top-football-boot-NNmdt3/FQ8311-900",
@@ -193,6 +192,5 @@ const productData = {
         "price": "23 095.00"
       }
     ]
-  }
 
   export default productData;

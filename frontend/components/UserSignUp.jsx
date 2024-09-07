@@ -16,7 +16,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 export default function UserSignUp() {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +37,7 @@ export default function UserSignUp() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ firstName, lastName, email, password }),
       });
 
       if (response.ok) {
@@ -46,7 +46,7 @@ export default function UserSignUp() {
         navigate('/products-page-02'); // Redirect after successful signup
       } else {
         const { error } = await response.json();
-        setError(error);
+        setError(error.message);
       }
     } catch (error) {
       setError(error.message); 
@@ -74,8 +74,8 @@ export default function UserSignUp() {
                 id="first-name" 
                 placeholder="Max" 
                 required 
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
             <div className="grid gap-2">

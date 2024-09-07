@@ -1,94 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Heart, ShoppingBag, ChevronDown, Menu, SlidersHorizontal, X } from 'lucide-react'
+import { Search, SlidersHorizontal, } from 'lucide-react'
 import NavBar from './NavBar';
 import productData from './products-data';
+import FilterContent from './FilterContent';
+import axios from 'axios';
 
 export default function ProductsPage02() {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [productList, setProductList] = useState([]);
 
-  const products = productData.group;
-
-  const FilterContent = () => (
-  <ScrollArea className="h-[calc(100vh-4rem)] ">
-      <div className="space-y-4 p-4">
-        <div>
-          <Label className="block mb-2">Keywords</Label>
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">Spring</Badge>
-            <Badge variant="secondary">Smart</Badge>
-            <Badge variant="secondary">Modern</Badge>
-          </div>
-        </div>
-        <div>
-          <Label className="block mb-2">Category</Label>
-          <div className="space-y-2">
-            {['Lifestyle', 'Running', 'Basketball', 'Football'].map((category, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`category${index}`} />
-                <label htmlFor={`category${index}`} className="text-sm">
-                  {category}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <Label className="block mb-2">Price</Label>
-          <Input type="range" min="0" max="100" />
-        </div>
-        <div>
-          <Label className="block mb-2">Color</Label>
-          <div className="space-y-2">
-            {['Black', 'White', 'Red', 'Orange', 'Pink', 'Brown', 'Gray'].map((color, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`color${index}`} />
-                <label htmlFor={`color${index}`} className="text-sm">
-                  {color}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <Label className="block mb-2">Size</Label>
-          <div className="space-y-2">
-            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`size${index}`} />
-                <label htmlFor={`size${index}`} className="text-sm">
-                  {size}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <Label className="block mb-2">Brands</Label>
-          <div className="space-y-2">
-            {['Nike','Adidas', 'Puma', 'New Balance', 'Umbro'].map((size, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox id={`size${index}`} />
-                <label htmlFor={`size${index}`} className="text-sm">
-                  {size}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </ScrollArea>
-  )
-
+  useEffect(() => {
+    // Make an HTTP request to the products endpoint
+    axios.get('http://localhost:3000/api/products/')
+      .then(res => {
+        setProductList(res.data.products);
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
+  }, []);
 
 
   return (
@@ -133,16 +69,16 @@ export default function ProductsPage02() {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 6 }).map((_, idx) => (
-                <Card key={idx} className="flex flex-col items-center p-4">
-                  <img className="w-full h-auto bg-muted rounded-md mb-4" src='https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/b556ec75-0fb1-481d-ae46-9a0440accc73/ZOOM+SUPERFLY+9+ELITE+FG+SE.png' />
+              {productList.length != 0 ? (productList.map((product) => (
+                <Card key={product._id} className="flex flex-col items-center p-4">
+                  <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} />
                   <div className="text-center">
-                    <p className="font-semibold">Nike Product</p>
-                    <p className="text-sm text-muted-foreground">Men's Shoes</p>
-                    <p className="font-bold mt-2">$129.99</p>
+                    <p className="font-semibold">{product.name}</p>
+                    <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} </p>
+                    <p className="font-bold mt-2">Rs. {product.price}</p>
                   </div>
                 </Card>
-              ))}
+              ))) : (`<h1>No Products Found</h1>`)}
             </div>
           </div>
         </div>

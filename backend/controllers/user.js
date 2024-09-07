@@ -15,13 +15,14 @@ const verify = token => new Promise((resolve, reject) => {
     });
 });
 
-export const signUpUser = async ({ name, email, password }) => {
+export const signUpUser = async ({ firstName, lastName, email, password }) => {
     try {
-        const user = await User.create({ name, email, password });
+        const user = await User.create({ firstName, lastName, email, password });
         const token = await sign({
             id: user._id,
             email: user.email,
-            name: user.name
+            firstName: user.firstName,
+            lastName: user.lastName,
         });
 
         return Promise.resolve({
@@ -29,7 +30,8 @@ export const signUpUser = async ({ name, email, password }) => {
             user: {
                 id: user._id,
                 email: user.email,
-                name: user.name
+                firstName: user.firstName,
+                lastName: user.lastName,
             }
         });
     } catch (error) {
@@ -44,7 +46,8 @@ export const loginUser = async ({ email, password }) => {
         const token = await sign({
             id: user._id,
             email: user.email,
-            name: user.name
+            firstName: user.firstName,
+            lastName: user.lastName,
         });
 
         return Promise.resolve({
@@ -52,7 +55,8 @@ export const loginUser = async ({ email, password }) => {
             user: {
                 id: user._id,
                 email: user.email,
-                name: user.name
+                firstName: user.firstName,
+                lastName: user.lastName,
             }
         });
     } catch (error) {
@@ -61,18 +65,18 @@ export const loginUser = async ({ email, password }) => {
 }
 
 export const verifyToken = async ({ token }) => {
-    try{
+    try {
         const user = jwt.decode(token);
-        const findUser = await User.findOne({ email: user.email});
-        if(!findUser) {
-            return Promise.reject({ error: "Unauthorized"});
+        const findUser = await User.findOne({ email: user.email });
+        if (!findUser) {
+            return Promise.reject({ error: "Unauthorized" });
         }
 
         //Verify Token and resolve
         await verify(token);
         return Promise.resolve();
 
-    }catch (error) {
+    } catch (error) {
         return Promise.reject({ error });
     }
 }

@@ -1,3 +1,4 @@
+import { verifyToken } from '../../controllers/user.js';
 export default async (req, res) =>{
     try{
         const {token} = req.body;

@@ -30,8 +30,10 @@ const productSchema = new Schema({
         required: true
     },
     stock: {
-        isAvailable: Boolean,
-        required: true
+        isAvailable: {
+            type: Boolean,
+            required: true,
+        }
     },
     brand: {
         type: String,   //Nike, Adidas, NB, Puma, etc. logos or names
@@ -40,3 +42,5 @@ const productSchema = new Schema({
 });
 
 const Product = model('Product', productSchema);
+
+export default Product;
