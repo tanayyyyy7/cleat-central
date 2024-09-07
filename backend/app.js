@@ -8,6 +8,7 @@ import compression from 'compression';
 import admin from './routes/admin/index.js';
 import api from './routes/api/index.js';
 import connectToDB from './db/index.js';
+import cors from 'cors';
 
 const app = express();
 
@@ -15,6 +16,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const logFile = join(__dirname, 'server.log');
 
 app.use(compression());
+
+
+app.use(cors());
 
 app.use(express.static(join(__dirname, '../frontend/dist'))); // Serve the built static files of the React app
 app.use('/assets', express.static(join(__dirname, '../frontend/assets')));

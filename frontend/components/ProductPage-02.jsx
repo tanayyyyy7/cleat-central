@@ -15,16 +15,35 @@ export default function ProductsPage02() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [productList, setProductList] = useState([]);
 
+  // fetch('/api/products/')
+  // .then(response => {
+  //   if (!response.ok) {
+  //     throw new Error(res.error);
+  //   }
+  //   return response.json();
+  // })
+  // .catch(error => {
+  //   console.error('Error fetching products:', error);
+  // });
+
   useEffect(() => {
-    // Make an HTTP request to the products endpoint
-    axios.get('http://localhost:3000/api/products/')
-      .then(res => {
-        setProductList(res.data.products);
-      })
-      .catch(error => {
-        console.error('Error fetching products:', error);
-      });
+    axios.get('/api/products/')
+    .then(res => {
+      setProductList(res.data.products);
+    })
+    .catch(error => {
+      console.error('Error fetching products:', error);
+    })
   }, []);
+
+    const getProducts = async () => {
+      try{
+        const response = await axios.get('');
+        setProductList(response.data);
+      }catch(error){
+        console.log(error);
+      }
+    }
 
 
   return (
@@ -72,7 +91,7 @@ export default function ProductsPage02() {
               {productList.length != 0 ? (productList.map((product) => (
                 <Card key={product._id} className="flex flex-col items-center p-4">
                   <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} />
-                  <div className="text-center">
+                  <div className="text-left">
                     <p className="font-semibold">{product.name}</p>
                     <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} </p>
                     <p className="font-bold mt-2">Rs. {product.price}</p>
