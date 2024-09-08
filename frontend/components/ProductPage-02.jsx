@@ -89,12 +89,12 @@ export default function ProductsPage02() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {productList.length != 0 ? (productList.map((product) => (
-                <Card key={product._id} className="flex flex-col items-center p-4">
+                <Card key={product._id} className="flex flex-col p-4">
                   <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} />
                   <div className="text-left">
                     <p className="font-semibold">{product.name}</p>
-                    <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} </p>
-                    <p className="font-bold mt-2">Rs. {product.price}</p>
+                    <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} Football Boot</p>
+                    <p className="font-bold mt-2">Rs. {product.price}.00</p>
                   </div>
                 </Card>
               ))) : (`<h1>No Products Found</h1>`)}

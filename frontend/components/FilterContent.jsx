@@ -34,19 +34,6 @@ const FilterContent = () => (
             <Input type="range" min="0" max="100" />
           </div>
           <div>
-            <Label className="block mb-2">Color</Label>
-            <div className="space-y-2">
-              {['Black', 'White', 'Red', 'Orange', 'Pink', 'Brown', 'Gray'].map((color, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <Checkbox id={`color${index}`} />
-                  <label htmlFor={`color${index}`} className="text-sm">
-                    {color}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
             <Label className="block mb-2">Size</Label>
             <div className="space-y-2">
               {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size, index) => (
