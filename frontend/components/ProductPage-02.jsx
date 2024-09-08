@@ -4,47 +4,57 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, SlidersHorizontal, } from 'lucide-react'
-import NavBar from './NavBar';
-import productData from './products-data';
-import FilterContent from './FilterContent';
-import axios from 'axios';
+import { Search, SlidersHorizontal } from 'lucide-react'
+import NavBar from './NavBar'
+import FilterContent from './FilterContent'
+import axios from 'axios'
 
 export default function ProductsPage02() {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [productList, setProductList] = useState([]);
-
-  // fetch('/api/products/')
-  // .then(response => {
-  //   if (!response.ok) {
-  //     throw new Error(res.error);
-  //   }
-  //   return response.json();
-  // })
-  // .catch(error => {
-  //   console.error('Error fetching products:', error);
-  // });
+  const [productList, setProductList] = useState([])
+  const [filteredList, setFilteredList] = useState([])
+  const [filters, setFilters] = useState({
+    brands: [],
+    surfaceTypes: [],
+    shoeHeights: [],
+  })
 
   useEffect(() => {
     axios.get('/api/products/')
-    .then(res => {
-      setProductList(res.data.products);
-    })
-    .catch(error => {
-      console.error('Error fetching products:', error);
-    })
-  }, []);
+      .then(res => {
+        setProductList(res.data.products)
+        setFilteredList(res.data.products)
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error)
+      })
+  }, [])
 
-    const getProducts = async () => {
-      try{
-        const response = await axios.get('');
-        setProductList(response.data);
-      }catch(error){
-        console.log(error);
-      }
+  useEffect(() => {
+    applyFilters()
+  }, [filters, productList])
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters)
+  }
+
+  const applyFilters = () => {
+    let filteredProducts = productList
+
+    if (filters.brands.length > 0) {
+      filteredProducts = filteredProducts.filter(product => filters.brands.includes(product.brand))
     }
 
+    if (filters.surfaceTypes.length > 0) {
+      filteredProducts = filteredProducts.filter(product => filters.surfaceTypes.includes(product.surfaceType))
+    }
+
+    if (filters.shoeHeights.length > 0) {
+      filteredProducts = filteredProducts.filter(product => filters.shoeHeights.includes(product.shoeHeight))
+    }
+
+    setFilteredList(filteredProducts)
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -55,11 +65,11 @@ export default function ProductsPage02() {
         <div className="flex flex-col md:flex-row gap-8">
           <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
             <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-              <FilterContent />
+              <FilterContent onFilterChange={handleFilterChange} />
             </SheetContent>
           </Sheet>
           <aside className="hidden md:block md:w-64 p-4 border rounded-md">
-            <FilterContent />
+            <FilterContent onFilterChange={handleFilterChange} />
           </aside>
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4">
@@ -88,16 +98,20 @@ export default function ProductsPage02() {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {productList.length != 0 ? (productList.map((product) => (
-                <Card key={product._id} className="flex flex-col p-4">
-                  <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} />
-                  <div className="text-left">
-                    <p className="font-semibold">{product.name}</p>
-                    <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} Football Boot</p>
-                    <p className="font-bold mt-2">Rs. {product.price}.00</p>
-                  </div>
-                </Card>
-              ))) : (`<h1>No Products Found</h1>`)}
+              {filteredList.length > 0 ? (
+                filteredList.map((product) => (
+                  <Card key={product._id} className="flex flex-col p-4">
+                    <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} alt={product.name} />
+                    <div className="text-left">
+                      <p className="font-semibold">{product.name}</p>
+                      <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} Football Boot</p>
+                      <p className="font-bold mt-2">Rs. {product.price}.00</p>
+                    </div>
+                  </Card>
+                ))
+              ) : (
+                <h1>No Products Found</h1>
+              )}
             </div>
           </div>
         </div>
@@ -132,7 +146,7 @@ export default function ProductsPage02() {
 
 function NikeLogo(props) {
   return (
-    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" role="img" width="24px" height="24px" fill="none">
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" role="img" width="24px" height="24px" fill="none" {...props}>
       <path fill="currentColor" fillRule="evenodd" d="M21 8.719L7.836 14.303C6.74 14.768 5.818 15 5.075 15c-.836 0-1.445-.295-1.819-.884-.485-.76-.273-1.982.559-3.272.494-.754 1.122-1.446 1.734-2.108-.144.234-1.415 2.349-.025 3.345.275.2.666.298 1.147.298.386 0 .829-.063 1.316-.19L21 8.719z" clipRule="evenodd" />
     </svg>
   )

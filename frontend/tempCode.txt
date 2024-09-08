@@ -1,21 +1,22 @@
-{Array.from({ length: 6 }).map((_, idx) => (
-                <Card key={idx} className="flex flex-col items-center p-4">
-                  <img className="w-full h-auto bg-muted rounded-md mb-4" src='https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/b556ec75-0fb1-481d-ae46-9a0440accc73/ZOOM+SUPERFLY+9+ELITE+FG+SE.png' />
-                  <div className="text-center">
-                    <p className="font-semibold">Nike Product</p>
-                    <p className="text-sm text-muted-foreground">Men's Shoes</p>
-                    <p className="font-bold mt-2">$129.99</p>
+{/* if(isFiltered){
+                if(filteredList.length > 0){
+                filteredList.map((product) => (
+                  <Card key={product._id} className="flex flex-col p-4">
+                    <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} />
+                    <div className="text-left">
+                }
+              }else{
+                {productList.length != 0 ? (productList.map((product) => (
+                <Card key={product._id} className="flex flex-col p-4">
+                  <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} />
+                  <div className="text-left">
+                    <p className="font-semibold">{product.name}</p>
+                    <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} Football Boot</p>
+                    <p className="font-bold mt-2">Rs. {product.price}.00</p>
                   </div>
                 </Card>
-              ))}
+              )))  : (`<h1>No Products Found</h1>`)}
 
-              {productList.length!=0 ? productList.map((product) => (
-                <Card key={product._id} className="flex flex-col items-center p-4">
-                  <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} />
-                    <div className="text-center">
-                        <p className="font-semibold">{product.name}</p>
-                        <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} </p>
-                        <p className="font-bold mt-2">Rs. {product.price}</p>
-                    </div>
-                </Card>
-              ))}
+              } */}
+
+{isFiltered ? (filteredList.length > 0 ? (filteredList.map())) : (productList.length != 0 ? (productList.map()) : (`<h1>No Products Found</h1>`))}
