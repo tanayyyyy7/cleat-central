@@ -1,0 +1,40 @@
+[{
+    "name": "Nike Phantom GX2 Club",
+    "description": "",
+    "price": 5495,
+    "image": "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/2ac7973d-4732-4f34-b724-03f501924e39/PHANTOM+GX+II+CLUB+IC.png",
+    "surfaceType": "IC",
+    "shoeHeight": "Low-Top",
+    "colour": "1 Colour",
+    "stock": {
+      "isAvailable": true
+    },
+    "brand": "Nike"
+  },
+  {
+    "name": "Nike Tiempo Legend 10 Academy",
+    "description": "",
+    "price": 5495,
+    "image": "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/d135c2e6-fd7c-473d-8b2c-b45f31af088d/LEGEND+10+ACADEMY+IC.png",
+    "surfaceType": "IC",
+    "shoeHeight": "Low-Top",
+    "colour": "1 Colour",
+    "stock": {
+      "isAvailable": true
+    },
+    "brand": "Nike"
+  },
+  {
+    "name": "Nike Lunar Gato II",
+    "description": "",
+    "price": 9995,
+    "image": "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/f08f1bcc-a7e3-4615-8c1c-1aa16cdf805d/NIKE+LUNARGATO+II.png",
+    "surfaceType": "IC",
+    "shoeHeight": "Low-Top",
+    "colour": "1 Colour",
+    "stock": {
+      "isAvailable": true
+    },
+    "brand": "Nike"
+  }]
+  

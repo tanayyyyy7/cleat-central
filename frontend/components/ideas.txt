@@ -1,0 +1,6 @@
+Idea:  For the Description part in Product Details Page :
+`product.brand` says: 
+[Description of Product]
+
+Idea: Implement a Carousel for the Product Image Gallery 
+in Product Details Page

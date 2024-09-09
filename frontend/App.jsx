@@ -12,11 +12,9 @@ import ProductsPage02 from "./components/ProductPage-02";
 import ProductDetails from "./components/ProductDetails";
 
 export default function App() {
-  const navigate = useNavigate();
  
   return (
     <AuthProvider>
-    <NextUIProvider navigate={navigate}>
       <Routes>
         {/* Set LandingPage as the root route */}
         <Route path="/" element={<LandingPage />} /> 
@@ -26,10 +24,9 @@ export default function App() {
         <Route path="/signup-user" element={<UserSignUp />} />
         <Route path="/products-page" element={<ProductsPage />} />
         <Route path="/products-page-02" element={<ProductsPage02 />} />
-        <Route path="/product-details" element={<ProductDetails />} />
+        <Route path="/product-details/:productId" element={<ProductDetails />} />
         {/* Add more routes as needed */}
       </Routes>
-    </NextUIProvider>
     </AuthProvider>
   );
 }

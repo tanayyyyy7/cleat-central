@@ -3,6 +3,16 @@ import React, { useState, useEffect } from 'react'
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 
+/* 
+Surface Types: 
+  MG: Multi Ground 
+  FG: Firm Ground
+  MG: Medium Ground
+  TF: Turf
+  SG: Soft Ground
+  IC: Indoor Court
+*/
+
 const FilterContent = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
     brands: [],
@@ -46,7 +56,7 @@ const FilterContent = ({ onFilterChange }) => {
     <ScrollArea className="h-[calc(100vh-4rem)]">
       <div className="space-y-4 p-4">
         {renderCheckboxGroup("Brands", ['Nike', 'Adidas', 'Puma', 'New Balance', 'Umbro'], "brands")}
-        {renderCheckboxGroup("Surface Type", ['MG', 'FG', 'TF', 'Soft Ground SG'], "surfaceTypes")}
+        {renderCheckboxGroup("Surface Type", ['MG', 'FG', 'TF', 'SG', 'IC'], "surfaceTypes")}
         {renderCheckboxGroup("Shoe Height", ['High-Top', 'Low-Top'], "shoeHeights")}
       </div>
     </ScrollArea>

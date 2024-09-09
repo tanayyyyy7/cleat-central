@@ -32,7 +32,8 @@ export default function NavMenuBar() {
 
   const handleSignIn = () => {
     // setIsSignedIn(!isSignedIn);
-    navigate("/user-auth");
+    // navigate("/user-auth");
+    navigate('/products-page-02');
   };
 
 

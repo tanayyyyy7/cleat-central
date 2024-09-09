@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
@@ -10,6 +11,7 @@ import FilterContent from './FilterContent'
 import axios from 'axios'
 
 export default function ProductsPage02() {
+  const navigate = useNavigate();
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [productList, setProductList] = useState([])
   const [filteredList, setFilteredList] = useState([])
@@ -18,6 +20,7 @@ export default function ProductsPage02() {
     surfaceTypes: [],
     shoeHeights: [],
   })
+
 
   useEffect(() => {
     axios.get('/api/products/')
@@ -55,6 +58,10 @@ export default function ProductsPage02() {
 
     setFilteredList(filteredProducts)
   }
+
+  const handleCardClick = (productId) => {
+    navigate(`/product-details/${productId}`); // Navigate to product-details route with the product ID
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -100,7 +107,7 @@ export default function ProductsPage02() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredList.length > 0 ? (
                 filteredList.map((product) => (
-                  <Card key={product._id} className="flex flex-col p-4">
+                  <Card key={product._id} className="flex flex-col p-4" onClick={() => handleCardClick(product._id)}>
                     <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} alt={product.name} />
                     <div className="text-left">
                       <p className="font-semibold">{product.name}</p>

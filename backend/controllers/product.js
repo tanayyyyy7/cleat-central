@@ -9,9 +9,9 @@ export const getAllProducts = async () => {
   }
 };
 
-export const getProduct = async () => {
+export const getProduct = async (productId) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(productId);
     return Promise.resolve(product);
   } catch (error) {
     return Promise.reject(error);
