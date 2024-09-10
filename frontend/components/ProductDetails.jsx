@@ -5,26 +5,38 @@ import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Star, ChevronDown } from 'lucide-react'
 import NavBar from './NavBar'
-import axios from 'axios'
+import ProductCarousel from './ProductCarousel'
+
 export default function ProductDetails() {
   const { productId } = useParams();
-  console.log(productId);
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
     fetch(`/api/product/${productId}`)
       .then((response) => response.json())
       .then((data) => {
-        const prod = data.product;
-        console.log(prod);
-        setProduct(prod);
+        setProduct(data.product);
       })
       .catch((error) => {
         console.error('Error fetching product:', error);
       });
   }, [productId]);
 
-  console.log(product?.name);
+  const productImages = [
+    { src: product?.images[0].src, alt: product?.images[0].alt },
+    { src: product?.images[1].src, alt: product?.images[1].alt },
+    { src: product?.images[2].src, alt: product?.images[2].alt },
+    { src: product?.images[3].src, alt: product?.images[3].alt },
+  ];
+
+  //For some reason this does not works
+  // const productImages = product?.images.map((elem, idx) => ({
+  //   src: elem.src,
+  //   alt: elem.alt,
+  // }));
+ 
+ 
+
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
@@ -32,19 +44,8 @@ export default function ProductDetails() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Image Gallery */}
           <div className="lg:w-2/3">
-            <div className="grid grid-cols-2 gap-4">
-              {[...Array(6)].map((_, i) => (
-                <Card key={i} className="aspect-square">
-                  <img
-                    src="/placeholder.svg?height=300&width=300"
-                    alt={`Product image ${i + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </Card>
-              ))}
-            </div>
+            <ProductCarousel images={productImages} />
           </div>
-
           {/* Product Info */}
           <div className="lg:w-1/3 space-y-6">
             <div>
@@ -67,23 +68,18 @@ export default function ProductDetails() {
 
             <Button className="w-full text-lg py-6">Add to Bag</Button>
 
-            <Button variant="outline" className="w-full text-lg py-6">Favorite</Button>
+            {/* <Button variant="outline" className="w-full text-lg py-6">Favorite</Button> */}
 
             <div className="space-y-4">
               <p>
-              <p className='italic'>{product?.brand} says:</p>
-               {product?.description}
+                <span className='block italic'>{product?.brand} says: </span>
+                {product?.description}
               </p>
               <ul className="list-disc list-inside space-y-2">
                 <li>Shown: White/Bright Crimson/Volt</li>
                 <li>Style: DJ5625-146</li>
               </ul>
             </div>
-
-            {/* <Button variant="link" className="flex items-center">
-            View Product Details
-            <ChevronDown className="ml-2 h-4 w-4" />
-          </Button> */}
 
             <div className="flex items-center space-x-2">
               <div className="flex">

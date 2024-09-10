@@ -39,6 +39,10 @@ const productSchema = new Schema({
         type: String,   //Nike, Adidas, NB, Puma, etc. logos or names
         required: true
     },
+    images: {
+        type: Array,
+        required: true
+    }
 });
 
 const Product = model('Product', productSchema);
