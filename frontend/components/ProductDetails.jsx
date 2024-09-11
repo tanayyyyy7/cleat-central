@@ -6,10 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Star, ChevronDown } from 'lucide-react'
 import NavBar from './NavBar'
 import ProductCarousel from './ProductCarousel'
+import { useCart } from './CartContext'
 
 export default function ProductDetails() {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     fetch(`/api/product/${productId}`)
@@ -22,20 +25,25 @@ export default function ProductDetails() {
       });
   }, [productId]);
 
-  const productImages = [
-    { src: product?.images[0].src, alt: product?.images[0].alt },
-    { src: product?.images[1].src, alt: product?.images[1].alt },
-    { src: product?.images[2].src, alt: product?.images[2].alt },
-    { src: product?.images[3].src, alt: product?.images[3].alt },
-  ];
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert('Please select a size');
+      return;
+    }
+    addToCart({
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0].src,
+      size: selectedSize,
+      quantity: 1
+    });
+    alert('Product added to cart');
+  };
 
-  //For some reason this does not works
-  // const productImages = product?.images.map((elem, idx) => ({
-  //   src: elem.src,
-  //   alt: elem.alt,
-  // }));
- 
- 
+  if (!product) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -44,39 +52,44 @@ export default function ProductDetails() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Image Gallery */}
           <div className="lg:w-2/3">
-            <ProductCarousel images={productImages} />
+            <ProductCarousel images={product.images} />
           </div>
           {/* Product Info */}
           <div className="lg:w-1/3 space-y-6">
             <div>
-              <h1 className="text-3xl font-bold">{product?.name}</h1>
-              <p className="text-lg text-muted-foreground">{product?.surfaceType} {product?.shoeHeight} Football Boot</p>
+              <h1 className="text-3xl font-bold">{product.name}</h1>
+              <p className="text-lg text-muted-foreground">{product.surfaceType} {product.shoeHeight} Football Boot</p>
             </div>
 
             <div>
-              <p className="text-2xl font-bold">MRP: &#8377; {product?.price}.00</p>
+              <p className="text-2xl font-bold">MRP: &#8377; {product.price}.00</p>
             </div>
 
             <div className="space-y-2">
               <p className="font-semibold">Select Size</p>
               <div className="grid grid-cols-3 gap-2">
-                {['UK 7 / W 8.5', 'UK 7.5 / W 9', 'UK 8 / W 9.5', 'UK 8.5 / W 10', 'UK 9 / W 10.5', 'UK 9.5 / W 11'].map((size) => (
-                  <Button key={size} variant="outline" className="text-sm">{size}</Button>
+                {['UK 7', 'UK 7.5', 'UK 8', 'UK 8.5', 'UK 9', 'UK 9.5', 'UK 10', 'UK 10.5', 'UK 11'].map((size, idx) => (
+                  <Button 
+                    key={idx} 
+                    variant={selectedSize === size ? "default" : "outline"} 
+                    className="text-sm"
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    {size}
+                  </Button>
                 ))}
               </div>
             </div>
 
-            <Button className="w-full text-lg py-6">Add to Bag</Button>
-
-            {/* <Button variant="outline" className="w-full text-lg py-6">Favorite</Button> */}
+            <Button className="w-full text-lg py-6" onClick={handleAddToCart}>Add to Bag</Button>
 
             <div className="space-y-4">
               <p>
-                <span className='block italic'>{product?.brand} says: </span>
-                {product?.description}
+                <span className='block italic'>{product.brand} says: </span>
+                {product.description}
               </p>
               <ul className="list-disc list-inside space-y-2">
-                <li>Shown: White/Bright Crimson/Volt</li>
+                <li>Colour Shown: {product.colour}</li>
                 <li>Style: DJ5625-146</li>
               </ul>
             </div>
@@ -101,15 +114,22 @@ export default function ProductDetails() {
           </TabsList>
           <TabsContent value="reviews" className="mt-6">
             <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
-            {/* Add review content here */}
+            <p>No reviews yet. Be the first to review this product!</p>
           </TabsContent>
           <TabsContent value="details" className="mt-6">
             <h2 className="text-2xl font-bold mb-4">Product Details</h2>
-            {/* Add product details content here */}
+            <ul className="list-disc list-inside space-y-2">
+              <li>Brand: {product.brand}</li>
+              <li>Surface Type: {product.surfaceType}</li>
+              <li>Shoe Height: {product.shoeHeight}</li>
+              <li>Colour: {product.colour}</li>
+              <li>Availability: {product.stock?.isAvailable ? 'In Stock' : 'Out of Stock'}</li>
+            </ul>
           </TabsContent>
           <TabsContent value="shipping" className="mt-6">
             <h2 className="text-2xl font-bold mb-4">Shipping & Returns</h2>
-            {/* Add shipping and returns content here */}
+            <p>Free standard shipping on orders over ₹14,000.</p>
+            <p>You can return your order for any reason, free of charge, within 30 days.</p>
           </TabsContent>
         </Tabs>
       </div>

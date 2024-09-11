@@ -26,7 +26,7 @@ export default function ProductCarousel({ images }) {
             }`}
             onClick={() => setCurrentImageIndex(index)}
           >
-            <img src={image.src} alt={image.alt} className="w-full h-auto object-cover overflow-hidden aspect-square" />
+            <img src={image.src} alt={image.alt} loading="lazy" className="w-full h-auto object-cover overflow-hidden aspect-square" />
           </Card>
         ))}
       </div>

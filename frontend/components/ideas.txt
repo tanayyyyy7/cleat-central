@@ -4,3 +4,5 @@ Idea:  For the Description part in Product Details Page :
 
 Idea: Implement a Carousel for the Product Image Gallery 
 in Product Details Page
+
+Idea: Implement Cart using Redux State Management

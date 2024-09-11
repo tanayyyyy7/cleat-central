@@ -108,7 +108,7 @@ export default function ProductsPage02() {
               {filteredList.length > 0 ? (
                 filteredList.map((product) => (
                   <Card key={product._id} className="flex flex-col p-4" onClick={() => handleCardClick(product._id)}>
-                    <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} alt={product.name} />
+                    <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} alt={product.name} loading="lazy" />
                     <div className="text-left">
                       <p className="font-semibold">{product.name}</p>
                       <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} Football Boot</p>

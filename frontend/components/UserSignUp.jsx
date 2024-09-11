@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading } from "react-icons/ai";
+import { useAuth } from "./AuthContext";
 
 export default function UserSignUp() {
 
@@ -21,6 +22,7 @@ export default function UserSignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null); 
+  const { login } = useAuth();
   const navigate = useNavigate(); 
 
 
@@ -43,6 +45,7 @@ export default function UserSignUp() {
       if (response.ok) {
         const { user, token } = await response.json();
         console.log(token);
+        login(token); // Authenticate the user with the returned token
         navigate('/products-page-02'); // Redirect after successful signup
       } else {
         const { error } = await response.json();

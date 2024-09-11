@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
@@ -20,10 +21,11 @@ const MenuContent = () => (
 )
 
 export default function NavBar() {
+    const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between border-b">
             <div className="flex items-center space-x-4">
                 <NikeLogo width={60} height={24} className="w-12 h-auto" />
                 <nav className="hidden md:flex space-x-4">
@@ -39,10 +41,9 @@ export default function NavBar() {
                     <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
                 </div>
                 <ModeToggle />
-                <Button variant="outline" size="icon">
+                <Button variant="outline" size="icon" onClick={()=> navigate('/cart')}>
                     <ShoppingBag size={24} />
                 </Button>
-
                 <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                     <SheetTrigger asChild>
                         <Button variant="ghost" size="icon" className="md:hidden">

@@ -14,7 +14,7 @@ router.get('/products', getProducts);
 router.route('/product/:productId?').get(getProduct);
 router.post('/login', loginUser);
 router.post('/signup-user', signUpUser);
-router.post('/verify', verifyUser);
+router.post('/verify-user', verifyUser);
 router.use(catchAll);
 
 export default router;

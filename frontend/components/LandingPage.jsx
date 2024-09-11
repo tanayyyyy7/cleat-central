@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/mode-toggle";
 import NavMenuBar from "./NavMenuBar";
+import NavBar from "./NavBar";
 export default function LandingPage() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [email, setEmail] = useState("");
@@ -45,7 +46,7 @@ export default function LandingPage() {
 
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <NavMenuBar />
+      <NavBar />
       <section className="w-full py-12 md:py-24 lg:py-32 xl:py-32">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center">

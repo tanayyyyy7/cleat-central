@@ -41,7 +41,15 @@ const productSchema = new Schema({
     },
     images: {
         type: Array,
-        required: true
+        required: true,
+        src: {
+            type: String,
+            required: true
+        },
+        alt: {
+            type: String,
+            required: true
+        },
     }
 });
 
