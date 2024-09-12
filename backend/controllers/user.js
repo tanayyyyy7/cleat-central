@@ -9,7 +9,7 @@ const sign = obj => new Promise((resolve, reject) => {
     });
 });
 const verify = token => new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.jwtPrivateKey, error => {
+    jwt.verify(token, process.env.jwtPrivateKey, err => {
         if (err) return reject(err);
         return resolve();
     });
@@ -77,6 +77,6 @@ export const verifyToken = async ({ token }) => {
         return Promise.resolve();
 
     } catch (error) {
-        return Promise.reject({ error });
+        return Promise.reject({ error: "Unauthorized" });
     }
 }
