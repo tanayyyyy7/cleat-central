@@ -5,7 +5,6 @@ import { createWriteStream } from 'fs';
 import morgan from 'morgan';
 import session from 'express-session';
 import compression from 'compression';
-import admin from './routes/admin/index.js';
 import api from './routes/api/index.js';
 import connectToDB from './db/index.js';
 import cors from 'cors';

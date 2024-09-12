@@ -1,35 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Activity,
-  ArrowUpRight,
-  CircleUser,
-  CreditCard,
-  DollarSign,
-  Menu,
-  Package2,
-  Search,
-  Users,
-  LogIn,
-} from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ModeToggle } from "@/components/mode-toggle";
 import NavMenuBar from "./NavMenuBar";
 import NavBar from "./NavBar";
+
+import { Link } from 'react-router-dom'
+
+import { ArrowRight, ShoppingBag, Truck, RefreshCw, Facebook, Twitter, Instagram } from 'lucide-react'
 export default function LandingPage() {
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   const handleSignIn = () => {
@@ -45,54 +25,128 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    <div className="min-h-screen flex flex-col">
+      <header>
       <NavBar />
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-32">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center">
-            <div className="flex flex-col justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-forground">
-                  {/* Welcome to our platform! */}
-                  Welcome to QPAS
-                </h1>
-                <p className="max-w-[600px] text-zinc-500 md:text-xl dark:text-zinc-400 mx-auto">
-                  Get access to your institution's previous
-                  <br />
-                  question papers at one place.
-                </p>
-              </div>
-              <div className="w-full max-w-sm space-y-2 mx-auto">
-                <form className="flex space-x-2">
-                  <Input
-                    className="max-w-lg flex-1"
-                    placeholder="Enter your email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <Button type="submit" onClick={ctaEmail}>
-                    Start Now
-                  </Button>
-                </form>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Start your preparation today.
-                  {/* <a className="underline underline-offset-2" href="#" prefetch={false}>
-                  Terms & Conditions
-                </a> */}
-                </p>
+      </header>
+      <main className="flex-grow">
+        <section className="relative bg-cover bg-center py-32" style={{backgroundImage: "url('/hero-background.jpg')"}}>
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="container mx-auto px-4 text-center relative z-10">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">Step into Style and Performance</h1>
+            <p className="text-xl mb-8 text-white">Discover the perfect football boots for your game</p>
+            <Link to="/signup-user">
+              <Button size="lg" className="">
+                Shop Now <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </section>
+
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">Featured Products</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { name: "Nike Mercurial Superfly", price: 24995, image: "/placeholder.svg?height=300&width=300" },
+                { name: "Adidas X Speedflow", price: 22995, image: "/placeholder.svg?height=300&width=300" },
+                { name: "Puma Future Z", price: 19995, image: "/placeholder.svg?height=300&width=300" },
+              ].map((product, index) => (
+                <Card key={index} className="overflow-hidden">
+                  <img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold mb-2">{product.name}</h3>
+                    <p className="text-muted-foreground mb-4">₹ {product.price.toFixed(2)}</p>
+                    <Button className="w-full">View Details</Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-muted py-16">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <ShoppingBag className="h-12 w-12 mx-auto mb-4 text-purple-500" />
+                  <h3 className="text-xl font-semibold mb-2">Wide Selection</h3>
+                  <p className="text-muted-foreground">Choose from a vast array of top-brand football boots</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <Truck className="h-12 w-12 mx-auto mb-4 text-purple-500" />
+                  <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>
+                  <p className="text-muted-foreground">Get your boots delivered quickly to your doorstep</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <RefreshCw className="h-12 w-12 mx-auto mb-4 text-purple-500" />
+                  <h3 className="text-xl font-semibold mb-2">Easy Returns</h3>
+                  <p className="text-muted-foreground">Not satisfied? Return within 30 days for a full refund</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold mb-8">Ready to Elevate Your Game?</h2>
+            <Link to="/products">
+              <Button size="lg">
+                Explore Our Collection <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-muted border-t py-8">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <h3 className="font-bold mb-4">Sporty Aesthetics</h3>
+              <p className="text-muted-foreground">Bringing you the best in football footwear</p>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Quick Links</h3>
+              <ul className="space-y-2">
+                <li><Link to="/products" className="hover:underline">Products</Link></li>
+                <li><Link to="/about" className="hover:underline">About Us</Link></li>
+                <li><Link to="/contact" className="hover:underline">Contact</Link></li>
+                <li><Link to="/terms" className="hover:underline">Terms of Service</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Connect With Us</h3>
+              <div className="flex flex-col space-y-3">
+                <a href="#" className="text-muted-foreground hover:text-foreground flex items-center">
+                  <Facebook className="h-5 w-5 mr-1" />
+                  facebook-username
+                </a>
+                <a href="#" className="text-muted-foreground hover:text-foreground flex items-center">
+                  <Twitter className="h-5 w-5 mr-1" />
+                  Twitter-username
+                </a>
+                <a href="#" className="text-muted-foreground hover:text-foreground flex items-center">
+                  <Instagram className="h-5 w-5 mr-1" />
+                  Instagram-username
+                </a>
               </div>
             </div>
-            <img
-              alt="Hero"
-              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-bottom sm:w-full lg:order-last"
-              height="310"
-              src="assets/qpas-illustration.svg"
-              width="550"
-            />
+          </div>
+          <div className="mt-8 text-center text-muted-foreground">
+            <p>&copy; 2023 FootwearFusion. All rights reserved.</p>
           </div>
         </div>
-      </section>
+      </footer>
+      
     </div>
   );
 }
+

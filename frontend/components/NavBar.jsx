@@ -14,7 +14,7 @@ import { ModeToggle } from "@/components/mode-toggle"
 const MenuContent = () => (
     <div className="space-y-4">
         <a href="#" className="block text-lg hover:underline">Home</a>
-        <a href="#" className="block text-lg hover:underline">Catalogue</a>
+        <a href="/products-page" className="block text-lg hover:underline">Catalogue</a>
         <a href="#" className="block text-lg hover:underline">Blog</a>
         <a href="#" className="block text-lg hover:underline">Contact Us</a>
     </div>
@@ -30,7 +30,7 @@ export default function NavBar() {
                 <NikeLogo width={60} height={24} className="w-12 h-auto" />
                 <nav className="hidden md:flex space-x-4">
                     <a href="#" className="text-md hover:underline">Home</a>
-                    <a href="#" className="text-md hover:underline">Catalogue</a>
+                    <a href="/products-page" className="text-md hover:underline">Catalogue</a>
                     <a href="#" className="text-md hover:underline">Blog</a>
                     <a href="#" className="text-md hover:underline">Contact Us</a>
                 </nav>
