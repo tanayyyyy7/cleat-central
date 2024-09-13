@@ -1,5 +1,15 @@
 import Product from "../models/product.js";
 
+export const getProduct = async (productId) => {
+  try {
+    const product = await Product.findById(productId);
+    return Promise.resolve(product);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+
 export const getAllProducts = async () => {
   try {
     const products = await Product.find();
@@ -9,10 +19,14 @@ export const getAllProducts = async () => {
   }
 };
 
-export const getProduct = async (productId) => {
+
+//The $sample stage randomly selects limit number of documents 
+export const getFeaturedProducts = async (limit = 3) => {
   try {
-    const product = await Product.findById(productId);
-    return Promise.resolve(product);
+    const featuredProducts = await Product.aggregate([
+      { $sample: { size: limit } }
+    ]);
+    return Promise.resolve(featuredProducts);
   } catch (error) {
     return Promise.reject(error);
   }

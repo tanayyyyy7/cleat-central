@@ -8,8 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Heart, ShoppingBag, ChevronDown, Menu, SlidersHorizontal, X } from 'lucide-react'
+import { Search, Heart, ShoppingBag, ChevronDown, Menu, LogIn, CircleUser } from 'lucide-react'
 import { ModeToggle } from "@/components/mode-toggle"
+import { useAuth } from './AuthContext'
 
 const MenuContent = () => (
     <div className="space-y-4">
@@ -23,27 +24,34 @@ const MenuContent = () => (
 export default function NavBar() {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { isLoggedIn } = useAuth();
+    // isLoggedIn
 
     return (
         <div className="container mx-auto px-4 py-4 flex items-center justify-between border-b">
+             <NikeLogo width={60} height={24} className="w-12 h-auto" />
             <div className="flex items-center space-x-4">
-                <NikeLogo width={60} height={24} className="w-12 h-auto" />
                 <nav className="hidden md:flex space-x-4">
-                    <a href="#" className="text-md hover:underline">Home</a>
+                    <a href="/" className="text-md hover:underline">Home</a>
                     <a href="/products-page" className="text-md hover:underline">Catalogue</a>
                     <a href="#" className="text-md hover:underline">Blog</a>
                     <a href="#" className="text-md hover:underline">Contact Us</a>
                 </nav>
             </div>
             <div className="flex items-center space-x-4">
-                <div className="relative hidden md:block">
-                    <Input type="search" placeholder="Search" className="pl-8 pr-4 py-2 rounded-full bg-muted" />
-                    <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
-                </div>
                 <ModeToggle />
                 <Button variant="outline" size="icon" onClick={()=> navigate('/cart')}>
                     <ShoppingBag size={24} />
                 </Button>
+                 {isLoggedIn ? (
+                    <Button variant="outline" size="icon" onClick={()=>{}}>
+             <CircleUser className="h-5 w-5" />
+             </Button>
+          ) : (
+            <Button variant="outline" size="icon" onClick={()=> navigate('/user-auth')}>
+              <LogIn className="h-5 w-5" />
+            </Button>
+          )}
                 <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                     <SheetTrigger asChild>
                         <Button variant="ghost" size="icon" className="md:hidden">
