@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, SlidersHorizontal } from 'lucide-react'
-import NavBar from './NavBar'
+import NavBar from '../shared-components/NavBar'
 import FilterContent from './FilterContent'
 import axios from 'axios'
 

@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ModeToggle } from "@/components/mode-toggle";
-import NavMenuBar from "./NavMenuBar";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
-import { Link } from 'react-router-dom'
+import NavBar from "../shared-components/NavBar";
+import Footer from "../shared-components/Footer";
 import { ArrowRight, ShoppingBag, Truck, RefreshCw, Facebook, Twitter, Instagram } from 'lucide-react'
+
 export default function LandingPage() {
   const navigate = useNavigate();
   const [featuredProducts, setFeaturedProducts] = useState([]);

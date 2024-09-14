@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Minus, Plus, Trash2 } from 'lucide-react'
-import NavBar from './NavBar'
-import { useCart } from './CartContext'
-import { useAuth } from './AuthContext'
+import NavBar from '../shared-components/NavBar'
+import { useCart } from '../../context/CartContext'
+import { useAuth } from '../../context/AuthContext'
 
 export default function Cart() {
   const { isLoggedIn } = useAuth()

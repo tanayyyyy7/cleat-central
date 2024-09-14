@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Star, ChevronDown } from 'lucide-react'
-import NavBar from './NavBar'
+import NavBar from '../shared-components/NavBar'
 import ProductCarousel from './ProductCarousel'
-import { useCart } from './CartContext'
+import { useCart } from '../../context/CartContext'
 
 export default function ProductDetails() {
   const { productId } = useParams();

@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, Heart, ShoppingBag, ChevronDown, Menu, LogIn, CircleUser } from 'lucide-react'
 import { ModeToggle } from "@/components/mode-toggle"
-import { useAuth } from './AuthContext'
+import { useAuth } from '../../context/AuthContext'
 
 const MenuContent = () => (
     <div className="space-y-4">
@@ -48,7 +48,7 @@ export default function NavBar() {
              <CircleUser className="h-5 w-5" />
              </Button>
           ) : (
-            <Button variant="outline" size="icon" onClick={()=> navigate('/user-auth')}>
+            <Button variant="outline" size="icon" onClick={()=> navigate('/signup-user')}>
               <LogIn className="h-5 w-5" />
             </Button>
           )}
