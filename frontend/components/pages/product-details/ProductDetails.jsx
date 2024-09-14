@@ -7,6 +7,7 @@ import { Star, ChevronDown } from 'lucide-react'
 import NavBar from '../shared-components/NavBar'
 import ProductCarousel from './ProductCarousel'
 import { useCart } from '../../context/CartContext'
+import Footer from '../shared-components/Footer'
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -133,6 +134,7 @@ export default function ProductDetails() {
           </TabsContent>
         </Tabs>
       </div>
+      <Footer />
     </div>
   )
 }

@@ -7,6 +7,7 @@ import ProductsPage02 from "./components/pages/products-page/ProductPage-02";
 import ProductDetails from "./components/pages/product-details/ProductDetails";
 import Cart from "./components/pages/cart/Cart";
 import { CartProvider } from './components/context/CartContext';
+import UserProfilePage from "./components/pages/profile/UserProfilePage";
 
 export default function App() {
  
@@ -20,6 +21,8 @@ export default function App() {
         <Route path="/products-page" element={<ProductsPage02 />} />
         <Route path="/product-details/:productId" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/profile" element={<UserProfilePage />} />
+        {/* Add more routes as needed */}
       </Routes>
       </CartProvider>
     </AuthProvider>

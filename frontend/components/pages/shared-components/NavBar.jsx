@@ -2,15 +2,25 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import { Link } from 'react-router-dom'
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, Heart, ShoppingBag, ChevronDown, Menu, LogIn, CircleUser } from 'lucide-react'
 import { ModeToggle } from "@/components/mode-toggle"
 import { useAuth } from '../../context/AuthContext'
+
 
 const MenuContent = () => (
     <div className="space-y-4">
@@ -25,11 +35,10 @@ export default function NavBar() {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isLoggedIn } = useAuth();
-    // isLoggedIn
 
     return (
         <div className="container mx-auto px-4 py-4 flex items-center justify-between border-b">
-             <NikeLogo width={60} height={24} className="w-12 h-auto" />
+            <NikeLogo width={60} height={24} className="w-12 h-auto" />
             <div className="flex items-center space-x-4">
                 <nav className="hidden md:flex space-x-4">
                     <a href="/" className="text-md hover:underline">Home</a>
@@ -38,24 +47,39 @@ export default function NavBar() {
                     <a href="#" className="text-md hover:underline">Contact Us</a>
                 </nav>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
                 <ModeToggle />
-                <Button variant="outline" size="icon" onClick={()=> navigate('/cart')}>
-                    <ShoppingBag size={24} />
+                <Button variant="ghost" size="icon" onClick={() => navigate('/cart')}>
+                    <ShoppingBag size={20} />
                 </Button>
-                 {isLoggedIn ? (
-                    <Button variant="outline" size="icon" onClick={()=>{}}>
-             <CircleUser className="h-5 w-5" />
-             </Button>
-          ) : (
-            <Button variant="outline" size="icon" onClick={()=> navigate('/signup-user')}>
-              <LogIn className="h-5 w-5" />
-            </Button>
-          )}
+                {true ? (
+                        <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="rounded-full">
+                            <CircleUser size={20}/>
+                            <span className="sr-only">Toggle user menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <Link to="/profile">
+                          <DropdownMenuItem>Profile</DropdownMenuItem>
+                          </Link>
+                          <DropdownMenuItem>Orders</DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>Logout</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                ) : (
+                    <Button variant="ghost" size="icon" onClick={() => navigate('/signup-user')}>
+                        <LogIn size={20} />
+                    </Button>
+                )}
                 <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                     <SheetTrigger asChild>
                         <Button variant="ghost" size="icon" className="md:hidden">
-                            <Menu size={24} />
+                            <Menu size={20} />
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="right" className="w-[300px] sm:w-[400px]">
