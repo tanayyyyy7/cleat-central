@@ -7,6 +7,7 @@ import catchAll from './catch-all.js';
 import protectApi from '../../utils/protectApi.js';
 import verifyUser from './verify-user.js';
 import getFeaturedProducts from './get-featured-products.js';
+import getUserProfile from './get-user-profile.js';
 
 const router = Router();
 
@@ -19,6 +20,10 @@ router.get('/featured-products', getFeaturedProducts);
 router.post('/login', loginUser);
 router.post('/signup-user', signUpUser);
 router.post('/verify-user', verifyUser);
+
+//User Profile
+router.get('/user-profile', getUserProfile);
+
 
 //Fallback route
 router.use(catchAll);

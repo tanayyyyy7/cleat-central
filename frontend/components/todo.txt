@@ -12,3 +12,4 @@ Idea: Find a better icon for Dark Mode toggle btn
 
 Idea: Add email in the contact Us section also the contactUs in NavBar should lead to the footer section of Home Page??
 File: [HomePage.jsx]
+

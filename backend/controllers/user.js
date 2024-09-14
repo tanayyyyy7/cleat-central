@@ -80,3 +80,19 @@ export const verifyToken = async ({ token }) => {
         return Promise.reject({ error: "Unauthorized" });
     }
 }
+
+//getting user profile details using jwt
+export const getUserProfile = async (token) => {
+  try {
+    
+    const user = jwt.decode(token);
+    const userId = user.id;
+    const userProfile = await User.findById(userId);
+
+    return Promise.resolve(userProfile);
+  
+  } catch (error) {
+        return Promise.reject({error:'Error fetching user profile:'});
+   
+  }
+};

@@ -1,0 +1,4 @@
+ToDo: Modify the User DB model as per the UserProfile.jsx
+
+ToDo: Implement endpoints & controller functions for updating the user obj based on 
+      the received updatedDetails from the UserProfile.

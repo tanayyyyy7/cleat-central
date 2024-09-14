@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Heart, ShoppingBag, ChevronDown, Menu, LogIn, CircleUser } from 'lucide-react'
+import { Search, Heart, ShoppingBag, ChevronDown, Menu, LogIn, CircleUser, User } from 'lucide-react'
 import { ModeToggle } from "@/components/mode-toggle"
 import { useAuth } from '../../context/AuthContext'
 
@@ -52,7 +52,7 @@ export default function NavBar() {
                 <Button variant="ghost" size="icon" onClick={() => navigate('/cart')}>
                     <ShoppingBag size={20} />
                 </Button>
-                {true ? (
+                {isLoggedIn ? (
                         <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon" className="rounded-full">
