@@ -6,12 +6,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { useAuth } from "../../context/AuthContext"
-import { Loader2, User, Mail, Lock } from "lucide-react"
+import { Loader2, Mail, Lock } from "lucide-react"
 
-export default function UserSignUp() {
+export default function UserLogIn() {
   const [isLoading, setIsLoading] = useState(false)
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState(null)
@@ -24,12 +22,12 @@ export default function UserSignUp() {
     setError(null)
 
     try {
-      const response = await fetch('/api/signup-user/', {
+      const response = await fetch('/api/login-user/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ firstName, lastName, email, password }),
+        body: JSON.stringify({ email, password }),
       })
 
       if (response.ok) {
@@ -52,9 +50,9 @@ export default function UserSignUp() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="mx-auto max-w-sm w-full">
         <CardHeader>
-          <CardTitle className="text-xl">Sign Up</CardTitle>
+          <CardTitle className="text-xl">Log In</CardTitle>
           <CardDescription>
-            Enter your information to create an account
+            Enter your credentials to access your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -64,36 +62,6 @@ export default function UserSignUp() {
             </p>
           )}
           <form onSubmit={onSubmit} className="grid gap-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="first-name">First name</Label>
-                <div className="relative">
-                  <Input
-                    id="first-name"
-                    placeholder="Max"
-                    required
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="pl-10"
-                  />
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-                </div>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="last-name">Last name</Label>
-                <div className="relative">
-                  <Input
-                    id="last-name"
-                    placeholder="Robinson"
-                    required
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    className="pl-10"
-                  />
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-                </div>
-              </div>
-            </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <div className="relative">
@@ -134,14 +102,14 @@ export default function UserSignUp() {
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                "Create an account"
+                "Log In"
               )}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
-            <a href="/login-user" className="underline">
-              Sign in
+            Don't have an account?{" "}
+            <a href="/signup-user" className="underline">
+              Sign up
             </a>
           </div>
         </CardContent>

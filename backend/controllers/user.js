@@ -96,3 +96,27 @@ export const getUserProfile = async (token) => {
    
   }
 };
+
+export const updateUserProfile = async (editedDetails) => {
+    try {
+      const user = await User.findById(editedDetails._id);
+  
+      if (user) {
+        user.firstName = (user.firstName !== editedDetails.firstName) ? editedDetails.firstName : user.firstName;
+        user.lastName = (user.lastName !== editedDetails.lastName) ? editedDetails.lastName : user.lastName;
+        
+        const updatedUser = await user.save();
+  
+        // res.json({
+        //   _id: updatedUser._id,
+        //   name: updatedUser.name,
+        //   email: updatedUser.email,
+        // });
+        return Promise.resolve(updatedUser);
+      } else {
+        return Promise.reject({ error: 'User not found' })
+      }
+    } catch (error) {
+      return Promise.reject({ message: error.message });
+    }
+  };

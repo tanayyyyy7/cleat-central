@@ -8,8 +8,10 @@ import { useToast } from "@/hooks/use-toast"
 import { Separator } from "@/components/ui/separator"
 import { User, Mail, Phone, MapPin, Briefcase, House } from 'lucide-react'
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext'
 
 export default function UserProfile() {
+  const { isLoggedIn, verifyToken, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false)
   const [notification, setNotification] = useState(null)
   const [userDetails, setUserDetails] = useState({})
@@ -18,9 +20,12 @@ export default function UserProfile() {
 
   useEffect(() => {
     fetchUserProfile()
-  }, [])
+    console.log('Current userDetails:', userDetails)
+  }, [isLoggedIn])
+
 
   const fetchUserProfile = async () => {
+      await verifyToken();
       const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
       axios.get('/api/user-profile/', {
         headers: {
@@ -35,6 +40,8 @@ export default function UserProfile() {
           description: "Error fetching profile. Please try again later.",
           variant: "destructive",
         });
+        setUserDetails({});
+        setEditedDetails({});
       })
   }
 
@@ -43,14 +50,32 @@ export default function UserProfile() {
     setEditedDetails({ ...userDetails })
   }
 
-  const handleSave = () => {
-    setUserDetails({ ...editedDetails })
-    setIsEditing(false)
-    toast({
-      title: "Profile Updated",
-      description: "Your profile has been successfully updated.",
-    })
-  }
+  const handleSave = async () => {
+    await verifyToken();
+    const token = localStorage.getItem('token');
+    axios.post('/api/update-user-profile', 
+      editedDetails,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }
+    ).then((res) => {
+      setUserDetails(res.data.updatedUser);
+      setIsEditing(false);
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been successfully updated.",
+      });
+    }).catch((error) => {
+      console.error('Error updating profile:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update profile",
+        variant: "destructive",
+      });
+    });
+};
 
   const handleCancel = () => {
     setIsEditing(false)
@@ -108,6 +133,7 @@ export default function UserProfile() {
             <Label htmlFor="email">Email</Label>
             {isEditing ? (
               <Input
+                disabled
                 id="email"
                 name="email"
                 type="email"

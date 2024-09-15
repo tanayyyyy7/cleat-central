@@ -3,13 +3,14 @@ Idea:  For the Description part in Product Details Page :
 [Description of Product]
 
 Idea: Implement a Carousel for the Product Image Gallery 
-in Product Details Page
+File: [ProductDetails.jsx]
 
 Idea: Instead of a Icon Button, try replacing it with text for 'Sign In'
 File: [NavBar.jsx]
 
-Idea: Find a better icon for Dark Mode toggle btn
 
 Idea: Add email in the contact Us section also the contactUs in NavBar should lead to the footer section of Home Page??
-File: [HomePage.jsx]
+File: [LandingPage.jsx]
 
+Idea: Remove the Shop Now btn from the Landing Page and something else to that section.
+File: [LandingPage.jsx]

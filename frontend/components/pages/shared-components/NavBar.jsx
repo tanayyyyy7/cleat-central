@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -34,7 +34,20 @@ const MenuContent = () => (
 export default function NavBar() {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, verifyToken, logout } = useAuth();
+
+    useEffect(() => {
+        const checkToken = async () => {
+          await verifyToken();
+        };
+    
+        checkToken();
+      }, []);
+
+      const handleUserLogout = () => {
+        logout();
+        alert('You have been logged out.')
+      };
 
     return (
         <div className="container mx-auto px-4 py-4 flex items-center justify-between border-b">
@@ -68,7 +81,7 @@ export default function NavBar() {
                           </Link>
                           <DropdownMenuItem>Orders</DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem>Logout</DropdownMenuItem>
+                          <DropdownMenuItem onClick={handleUserLogout}>Logout</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                 ) : (
