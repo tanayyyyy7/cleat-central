@@ -18,6 +18,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: Number,
+        default: '',
+    },
     createdAt: {
         type: Date,
         default: Date.now

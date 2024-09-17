@@ -5,7 +5,8 @@ import catchAll from '../catch-all.js';
 
 const router = Router();
 
-router.route('/user-profile').get(getUserProfile).post(updateUserProfile);
+//acts as /api/user-profile/ endpoint
+router.route('/').get(getUserProfile).post(updateUserProfile);
 
 //Fallback route
 router.use(catchAll);

@@ -53,7 +53,7 @@ export default function UserProfile() {
   const handleSave = async () => {
     await verifyToken();
     const token = localStorage.getItem('token');
-    axios.post('/api/user-profile',
+    axios.post('/api/user-profile/',
       editedDetails,
       {
         headers: {
