@@ -1,59 +1,59 @@
-import React, { useState, useEffect } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { useToast } from "@/hooks/use-toast"
-import { Separator } from "@/components/ui/separator"
-import { User, Mail, Phone, MapPin, Briefcase, House } from 'lucide-react'
+import React, { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+import { User, Mail, Phone, MapPin, Briefcase, House } from 'lucide-react';
 import axios from 'axios';
-import { useAuth } from '../../context/AuthContext'
+import { useAuth } from '../../context/AuthContext';
 
 export default function UserProfile() {
   const { isLoggedIn, verifyToken, logout } = useAuth();
-  const [isEditing, setIsEditing] = useState(false)
-  const [notification, setNotification] = useState(null)
-  const [userDetails, setUserDetails] = useState({})
-  const [editedDetails, setEditedDetails] = useState({ ...userDetails })
-  const { toast } = useToast()
+  const [isEditing, setIsEditing] = useState(false);
+  const [notification, setNotification] = useState(null);
+  const [userDetails, setUserDetails] = useState({});
+  const [editedDetails, setEditedDetails] = useState({ ...userDetails });
+  const { toast } = useToast();
 
   useEffect(() => {
-    fetchUserProfile()
-    console.log('Current userDetails:', userDetails)
-  }, [isLoggedIn])
+    fetchUserProfile();
+    console.log('Current userDetails:', userDetails);
+  }, [isLoggedIn]);
 
 
   const fetchUserProfile = async () => {
-      await verifyToken();
-      const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
-      axios.get('/api/user-profile/', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      }).then((response) => {
-        setUserDetails(response.data.userProfile);
-        setEditedDetails(response.data.userProfile);
-      }).catch((error) => {
-        toast({
-          title: "Oops!",
-          description: "Error fetching profile. Please try again later.",
-          variant: "destructive",
-        });
-        setUserDetails({});
-        setEditedDetails({});
-      })
-  }
+    await verifyToken();
+    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+    axios.get('/api/user-profile/', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }).then((response) => {
+      setUserDetails(response.data.userProfile);
+      setEditedDetails(response.data.userProfile);
+    }).catch((error) => {
+      toast({
+        title: "Oops!",
+        description: "Error fetching profile. Please try again later.",
+        variant: "destructive",
+      });
+      setUserDetails({});
+      setEditedDetails({});
+    });
+  };
 
   const handleEdit = () => {
-    setIsEditing(true)
-    setEditedDetails({ ...userDetails })
-  }
+    setIsEditing(true);
+    setEditedDetails({ ...userDetails });
+  };
 
   const handleSave = async () => {
     await verifyToken();
     const token = localStorage.getItem('token');
-    axios.post('/api/update-user-profile', 
+    axios.post('/api/user-profile',
       editedDetails,
       {
         headers: {
@@ -75,17 +75,17 @@ export default function UserProfile() {
         variant: "destructive",
       });
     });
-};
+  };
 
   const handleCancel = () => {
-    setIsEditing(false)
-    setEditedDetails({ ...userDetails })
-  }
+    setIsEditing(false);
+    setEditedDetails({ ...userDetails });
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setEditedDetails(prev => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setEditedDetails(prev => ({ ...prev, [name]: value }));
+  };
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -111,7 +111,7 @@ export default function UserProfile() {
             )}
           </div>
         </div>
-         <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4">
           <User className="h-6 w-6 text-gray-500" />
           <div className="flex-grow">
             <Label htmlFor="lastName">Last Name</Label>
@@ -205,5 +205,5 @@ export default function UserProfile() {
         )}
       </CardFooter>
     </Card>
-  )
+  );
 }

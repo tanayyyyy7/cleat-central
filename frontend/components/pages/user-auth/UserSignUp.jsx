@@ -24,7 +24,7 @@ export default function UserSignUp() {
     setError(null)
 
     try {
-      const response = await fetch('/api/signup-user/', {
+      const response = await fetch('/api/user/signup/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

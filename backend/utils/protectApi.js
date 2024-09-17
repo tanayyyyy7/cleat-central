@@ -10,6 +10,6 @@ const protectApi = async (req, res, next) => {
   } catch (err) {
     res.status(403).json({ message: "Unauthorized access" });
   }
-}
+};
 
 export default protectApi;

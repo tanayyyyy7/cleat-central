@@ -37,7 +37,7 @@ export const signUpUser = async ({ firstName, lastName, email, password }) => {
     } catch (error) {
         return Promise.reject(error);
     }
-}
+};
 
 export const loginUser = async ({ email, password }) => {
     try {
@@ -62,7 +62,7 @@ export const loginUser = async ({ email, password }) => {
     } catch (error) {
         return Promise.reject({ error });
     }
-}
+};
 
 export const verifyToken = async ({ token }) => {
     try {
@@ -79,44 +79,40 @@ export const verifyToken = async ({ token }) => {
     } catch (error) {
         return Promise.reject({ error: "Unauthorized" });
     }
-}
+};
 
 //getting user profile details using jwt
 export const getUserProfile = async (token) => {
-  try {
-    
-    const user = jwt.decode(token);
-    const userId = user.id;
-    const userProfile = await User.findById(userId);
+    try {
 
-    return Promise.resolve(userProfile);
-  
-  } catch (error) {
-        return Promise.reject({error:'Error fetching user profile:'});
-   
-  }
+        const user = jwt.decode(token);
+        const userId = user.id;
+        const userProfile = await User.findById(userId);
+
+        return Promise.resolve(userProfile);
+
+    } catch (error) {
+        return Promise.reject({ error: 'Error fetching user profile:' });
+
+    }
 };
 
 export const updateUserProfile = async (editedDetails) => {
     try {
-      const user = await User.findById(editedDetails._id);
-  
-      if (user) {
-        user.firstName = (user.firstName !== editedDetails.firstName) ? editedDetails.firstName : user.firstName;
-        user.lastName = (user.lastName !== editedDetails.lastName) ? editedDetails.lastName : user.lastName;
-        
-        const updatedUser = await user.save();
-  
-        // res.json({
-        //   _id: updatedUser._id,
-        //   name: updatedUser.name,
-        //   email: updatedUser.email,
-        // });
-        return Promise.resolve(updatedUser);
-      } else {
-        return Promise.reject({ error: 'User not found' })
-      }
+        const user = await User.findById(editedDetails._id);
+
+        if (user) {
+            user.firstName = (user.firstName !== editedDetails.firstName) ? editedDetails.firstName : user.firstName;
+            user.lastName = (user.lastName !== editedDetails.lastName) ? editedDetails.lastName : user.lastName;
+            //other properties remaining
+
+            const updatedUser = await user.save();
+
+            return Promise.resolve(updatedUser);
+        } else {
+            return Promise.reject({ error: 'User not found' });
+        }
     } catch (error) {
-      return Promise.reject({ message: error.message });
+        return Promise.reject({ message: error.message });
     }
-  };
+};

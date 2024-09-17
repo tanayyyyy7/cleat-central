@@ -22,12 +22,20 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    
+    address: {
+        type: String,
+        default: '',
+    },
+    pincode: {
+        type: String,
+        default: ''
+    }
+
 });
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
-       return next();
+        return next();
     }
     const salt = await bcrypt.genSalt(10); //salting
     this.password = await bcrypt.hash(this.password, salt);
@@ -35,13 +43,13 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
-    try{
-       const match = await bcrypt.compare(enteredPassword, this.password);
-        if(match){
+    try {
+        const match = await bcrypt.compare(enteredPassword, this.password);
+        if (match) {
             return Promise.resolve();
         }
         return Promise.reject();
-    }catch(error){
+    } catch (error) {
         return Promise.reject(error);
     }
 };

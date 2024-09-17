@@ -6,39 +6,39 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ModeToggle } from "@/components/mode-toggle";
 import NavBar from "../shared-components/NavBar";
 import Footer from "../shared-components/Footer";
-import { ArrowRight, ShoppingBag, Truck, RefreshCw, Facebook, Twitter, Instagram } from 'lucide-react'
+import { ArrowRight, ShoppingBag, Truck, RefreshCw, Facebook, Twitter, Instagram } from 'lucide-react';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
-    useEffect(() => {
-      axios.get('/api/featured-products/')
-        .then(res => {
-          setFeaturedProducts(res.data.featuredProducts)
-          console.log(res.data.featuredProducts)
-        })
-        .catch(error => {
-          console.error('Error fetching products:', error)
-        })
-    }, [])
+  useEffect(() => {
+    axios.get('/api/products/featured')
+      .then(res => {
+        setFeaturedProducts(res.data.featuredProducts);
+        console.log(res.data.featuredProducts);
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
+  }, []);
 
-    const handleCardClick = (productId) => {
-      navigate(`/product-details/${productId}`); // Navigate to product-details route with the product ID
-    };
+  const handleCardClick = (productId) => {
+    navigate(`/product-details/${productId}`); // Navigate to product-details route with the product ID
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
       <header>
-      <NavBar />
+        <NavBar />
       </header>
       <main className="flex-grow">
-        <section className="relative bg-cover bg-center py-32" style={{backgroundImage: "url('/hero-background.jpg')"}}>
+        <section className="relative bg-cover bg-center py-32" style={{ backgroundImage: "url('/hero-background.jpg')" }}>
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="container mx-auto px-4 text-center relative z-10">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">Step into Style and Performance</h1>
             <p className="text-xl mb-8 text-white">Discover the perfect football boots for your game</p>
-            
+
             <Link to="/products-page">
               <Button size="lg">
                 Explore Our Collection <ArrowRight className="ml-2 h-4 w-4" />

@@ -3,11 +3,12 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createWriteStream } from 'fs';
 import morgan from 'morgan';
-import session from 'express-session';
 import compression from 'compression';
-import api from './routes/api/index.js';
 import connectToDB from './db/index.js';
 import cors from 'cors';
+import products from './routes/api/products/index.js';
+import user from './routes/api/user/index.js';
+import userProfile from './routes/api/userProfile/index.js';
 
 const app = express();
 
@@ -16,17 +17,18 @@ const logFile = join(__dirname, 'server.log');
 
 app.use(compression());
 
-
 app.use(cors());
 
 app.use(express.static(join(__dirname, '../frontend/dist'))); // Serve the built static files of the React app
 app.use('/assets', express.static(join(__dirname, '../frontend/assets')));
 
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json()); 
+app.use(express.json());
 
 
-app.use('/api', api);
+app.use('/api/products', products);
+app.use('/api/user', user);
+app.use('/api/user-profile', userProfile);
 
 // Handle all other routes and return the React app
 app.get('*', (req, res) => {

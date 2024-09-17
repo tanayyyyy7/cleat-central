@@ -1,14 +1,14 @@
 import { Router } from 'express';
-import getProducts from './get-products.js';
-import loginUser from './login-user.js';
-import signUpUser from './signup-user.js';
-import getProduct from './get-product.js';
+import getProducts from './products/catalogue.js';
+import loginUser from './user/login.js';
+import signUpUser from './user/signup.js';
+import getProduct from './products/product.js';
 import catchAll from './catch-all.js';
 import protectApi from '../../utils/protectApi.js';
-import verifyUser from './verify-user.js';
-import getFeaturedProducts from './get-featured-products.js';
-import getUserProfile from './get-user-profile.js';
-import updateUserProfile from './update-user-profile.js';
+import verifyUser from './user/verify.js';
+import getFeaturedProducts from './products/featured.js';
+import getUserProfile from './userProfile/get-user-profile.js';
+import updateUserProfile from './userProfile/update-user-profile.js';
 
 const router = Router();
 

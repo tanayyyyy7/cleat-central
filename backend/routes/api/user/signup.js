@@ -1,4 +1,4 @@
-import { signUpUser } from "../../controllers/user.js";
+import { signUpUser } from "../../../controllers/userController.js";
 
 export default async (req, res) => {
   try {

@@ -1,63 +1,63 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card } from "@/components/ui/card"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, SlidersHorizontal } from 'lucide-react'
-import NavBar from '../shared-components/NavBar'
-import FilterContent from './FilterContent'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Search, SlidersHorizontal } from 'lucide-react';
+import NavBar from '../shared-components/NavBar';
+import FilterContent from './FilterContent';
+import axios from 'axios';
 
 export default function ProductsPage02() {
   const navigate = useNavigate();
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [productList, setProductList] = useState([])
-  const [filteredList, setFilteredList] = useState([])
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [productList, setProductList] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
   const [filters, setFilters] = useState({
     brands: [],
     surfaceTypes: [],
     shoeHeights: [],
-  })
+  });
 
 
   useEffect(() => {
-    axios.get('/api/products/')
+    axios.get('/api/products/catalogue')
       .then(res => {
-        setProductList(res.data.products)
-        setFilteredList(res.data.products)
+        setProductList(res.data.products);
+        setFilteredList(res.data.products);
       })
       .catch(error => {
-        console.error('Error fetching products:', error)
-      })
-  }, [])
+        console.error('Error fetching products:', error);
+      });
+  }, []);
 
   useEffect(() => {
-    applyFilters()
-  }, [filters, productList])
+    applyFilters();
+  }, [filters, productList]);
 
   const handleFilterChange = (newFilters) => {
-    setFilters(newFilters)
-  }
+    setFilters(newFilters);
+  };
 
   const applyFilters = () => {
-    let filteredProducts = productList
+    let filteredProducts = productList;
 
     if (filters.brands.length > 0) {
-      filteredProducts = filteredProducts.filter(product => filters.brands.includes(product.brand))
+      filteredProducts = filteredProducts.filter(product => filters.brands.includes(product.brand));
     }
 
     if (filters.surfaceTypes.length > 0) {
-      filteredProducts = filteredProducts.filter(product => filters.surfaceTypes.includes(product.surfaceType))
+      filteredProducts = filteredProducts.filter(product => filters.surfaceTypes.includes(product.surfaceType));
     }
 
     if (filters.shoeHeights.length > 0) {
-      filteredProducts = filteredProducts.filter(product => filters.shoeHeights.includes(product.shoeHeight))
+      filteredProducts = filteredProducts.filter(product => filters.shoeHeights.includes(product.shoeHeight));
     }
 
-    setFilteredList(filteredProducts)
-  }
+    setFilteredList(filteredProducts);
+  };
 
   const handleCardClick = (productId) => {
     navigate(`/product-details/${productId}`); // Navigate to product-details route with the product ID
@@ -148,7 +148,7 @@ export default function ProductsPage02() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
 function NikeLogo(props) {
@@ -156,7 +156,7 @@ function NikeLogo(props) {
     <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" role="img" width="24px" height="24px" fill="none" {...props}>
       <path fill="currentColor" fillRule="evenodd" d="M21 8.719L7.836 14.303C6.74 14.768 5.818 15 5.075 15c-.836 0-1.445-.295-1.819-.884-.485-.76-.273-1.982.559-3.272.494-.754 1.122-1.446 1.734-2.108-.144.234-1.415 2.349-.025 3.345.275.2.666.298 1.147.298.386 0 .829-.063 1.316-.19L21 8.719z" clipRule="evenodd" />
     </svg>
-  )
+  );
 }
 
 function FacebookIcon(props) {
@@ -175,7 +175,7 @@ function FacebookIcon(props) {
     >
       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
     </svg>
-  )
+  );
 }
 
 function InstagramIcon(props) {
@@ -196,7 +196,7 @@ function InstagramIcon(props) {
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
       <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
     </svg>
-  )
+  );
 }
 
 function TwitterIcon(props) {
@@ -215,5 +215,5 @@ function TwitterIcon(props) {
     >
       <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
     </svg>
-  )
+  );
 }

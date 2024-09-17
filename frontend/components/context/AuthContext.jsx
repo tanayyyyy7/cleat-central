@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (token) {
         // Make a request to the backend verify endpoint
-        const response = await fetch('/api/verify-user/', {
+        const response = await fetch('/api/user/verify/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

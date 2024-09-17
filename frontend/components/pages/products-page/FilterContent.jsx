@@ -1,7 +1,7 @@
-import { ScrollArea } from "@/components/ui/scroll-area"
-import React, { useState, useEffect } from 'react'
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
+import { ScrollArea } from "@/components/ui/scroll-area";
+import React, { useState, useEffect } from 'react';
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 /* 
 Surface Types: 
@@ -25,7 +25,7 @@ const FilterContent = ({ onFilterChange }) => {
       const updatedCategory = prevFilters[category].includes(item)
         ? prevFilters[category].filter(i => i !== item)
         : [...prevFilters[category], item];
-      
+
       const updatedFilters = { ...prevFilters, [category]: updatedCategory };
       onFilterChange(updatedFilters);
       return updatedFilters;
@@ -38,7 +38,7 @@ const FilterContent = ({ onFilterChange }) => {
       <div className="space-y-2">
         {items.map((elem, index) => (
           <div key={index} className="flex items-center space-x-2">
-            <Checkbox 
+            <Checkbox
               id={`${category}-${index}`}
               checked={filters[category].includes(elem)}
               onCheckedChange={() => handleFilterChange(category, elem)}
@@ -61,6 +61,6 @@ const FilterContent = ({ onFilterChange }) => {
       </div>
     </ScrollArea>
   );
-}
+};
 
 export default FilterContent;

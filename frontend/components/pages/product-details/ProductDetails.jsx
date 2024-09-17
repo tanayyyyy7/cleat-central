@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Star, ChevronDown } from 'lucide-react'
-import NavBar from '../shared-components/NavBar'
-import ProductCarousel from './ProductCarousel'
-import { useCart } from '../../context/CartContext'
-import Footer from '../shared-components/Footer'
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Star, ChevronDown } from 'lucide-react';
+import NavBar from '../shared-components/NavBar';
+import ProductCarousel from './ProductCarousel';
+import { useCart } from '../../context/CartContext';
+import Footer from '../shared-components/Footer';
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -16,7 +16,7 @@ export default function ProductDetails() {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetch(`/api/product/${productId}`)
+    fetch(`/api/products/product/${productId}`)
       .then((response) => response.json())
       .then((data) => {
         setProduct(data.product);
@@ -70,9 +70,9 @@ export default function ProductDetails() {
               <p className="font-semibold">Select Size</p>
               <div className="grid grid-cols-3 gap-2">
                 {['UK 7', 'UK 7.5', 'UK 8', 'UK 8.5', 'UK 9', 'UK 9.5', 'UK 10', 'UK 10.5', 'UK 11'].map((size, idx) => (
-                  <Button 
-                    key={idx} 
-                    variant={selectedSize === size ? "default" : "outline"} 
+                  <Button
+                    key={idx}
+                    variant={selectedSize === size ? "default" : "outline"}
                     className="text-sm"
                     onClick={() => setSelectedSize(size)}
                   >
@@ -136,5 +136,5 @@ export default function ProductDetails() {
       </div>
       <Footer />
     </div>
-  )
+  );
 }
