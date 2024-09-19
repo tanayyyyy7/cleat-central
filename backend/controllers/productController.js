@@ -31,3 +31,31 @@ export const getFeaturedProducts = async (limit = 3) => {
     return Promise.reject(error);
   }
 };
+
+export const filterProducts = async (surfaceType, shoeHeight) => {
+  try {
+    let query = {};
+
+    if (surfaceType) {
+      query.surfaceType = surfaceType;
+    }
+
+    if (shoeHeight) {
+      query.shoeHeight = shoeHeight;
+    }
+
+    if (Object.keys(query).length === 0) {
+      throw new Error('At least one parameter (surfaceType or shoeHeight) is required');
+    }
+
+    const filteredProducts = await Product.find(query);
+
+    if (filteredProducts.length === 0) {
+      throw new Error('No products found for the given parameters');
+    }
+
+    return Promise.resolve(filteredProducts);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

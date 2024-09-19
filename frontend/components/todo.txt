@@ -14,3 +14,5 @@ File: [LandingPage.jsx]
 
 Idea: Remove the Shop Now btn from the Landing Page and something else to that section.
 File: [LandingPage.jsx]
+
+Idea: Implement Skeleton Loading or lazy() for each image and some components in the app

@@ -107,7 +107,7 @@ export const updateUserProfile = async (editedDetails) => {
             user.phone = (user.phone !== editedDetails.phone) ? editedDetails.phone : user.phone;
             user.address = (user.address !== editedDetails.address) ? editedDetails.address : user.address;
             user.pincode = (user.pincode !== editedDetails.pincode) ? editedDetails.pincode : user.pincode;
-            //other properties remaining
+            //modify the address properties
 
             const updatedUser = await user.save();
 

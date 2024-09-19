@@ -9,12 +9,17 @@ import { Search, SlidersHorizontal } from 'lucide-react';
 import NavBar from '../shared-components/NavBar';
 import FilterContent from './FilterContent';
 import axios from 'axios';
+import ProductCardSkeleton from '../shared-components/ProductCardSkeleton';
+import { useToast } from "@/hooks/use-toast";
 
 export default function ProductsPage02() {
   const navigate = useNavigate();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [productList, setProductList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
+  const [sortBy, setSortBy] = useState('featured');
+  const { toast } = useToast();
   const [filters, setFilters] = useState({
     brands: [],
     surfaceTypes: [],
@@ -27,15 +32,21 @@ export default function ProductsPage02() {
       .then(res => {
         setProductList(res.data.products);
         setFilteredList(res.data.products);
+        setIsLoading(false);
       })
       .catch(error => {
-        console.error('Error fetching products:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to fetch products. Please Try Again Later',
+          variant: 'destructive',
+        });
+        setIsLoading(false);
       });
   }, []);
 
   useEffect(() => {
     applyFilters();
-  }, [filters, productList]);
+  }, [filters, productList, sortBy]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -56,11 +67,36 @@ export default function ProductsPage02() {
       filteredProducts = filteredProducts.filter(product => filters.shoeHeights.includes(product.shoeHeight));
     }
 
-    setFilteredList(filteredProducts);
+    let sortedProducts = [...filteredProducts];
+
+    switch (sortBy) {
+      case 'newest':
+        sortedProducts.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+        break;
+      case 'oldest':
+        sortedProducts.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+        break;
+      case 'price-low-high':
+        sortedProducts.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high-low':
+        sortedProducts.sort((a, b) => b.price - a.price);
+        break;
+      default:
+        sortedProducts.sort(() => Math.random() - 0.5);
+        break;
+    }
+
+    setFilteredList(sortedProducts);
+    
   };
 
   const handleCardClick = (productId) => {
-    navigate(`/product-details/${productId}`); // Navigate to product-details route with the product ID
+    navigate(`/product-details/${productId}`);
+  };
+
+  const handleSortChange = (value) => {
+    setSortBy(value);
   };
 
   return (
@@ -91,13 +127,14 @@ export default function ProductsPage02() {
                 </div>
               </div>
               <div className="flex items-center gap-2 w-full sm:w-auto">
-                <Select>
+                <Select value={sortBy} onValueChange={handleSortChange}>
                   <SelectTrigger className="w-full sm:w-[180px]">
                     <SelectValue placeholder="Sort By" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="featured">Featured</SelectItem>
                     <SelectItem value="newest">Newest</SelectItem>
+                    <SelectItem value="oldest">Oldest</SelectItem>
                     <SelectItem value="price-high-low">Price: High-Low</SelectItem>
                     <SelectItem value="price-low-high">Price: Low-High</SelectItem>
                   </SelectContent>
@@ -105,7 +142,12 @@ export default function ProductsPage02() {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredList.length > 0 ? (
+              {isLoading ? (
+                // Display skeleton loading while fetching data
+                Array.from({ length: 6 }).map((_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))
+              ) : filteredList.length > 0 ? (
                 filteredList.map((product) => (
                   <Card key={product._id} className="flex flex-col p-4" onClick={() => handleCardClick(product._id)}>
                     <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} alt={product.name} loading="lazy" />

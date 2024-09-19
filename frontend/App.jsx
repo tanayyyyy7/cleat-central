@@ -9,7 +9,7 @@ import ProductDetails from "./components/pages/product-details/ProductDetails";
 import Cart from "./components/pages/cart/Cart";
 import { CartProvider } from './components/context/CartContext';
 import UserProfilePage from "./components/pages/user-profile/UserProfilePage";
-
+import KnowYourBoots from "./components/pages/blog/KnowYourBoots";
 
 export default function App() {
  
@@ -25,7 +25,8 @@ export default function App() {
         <Route path="/product-details/:productId" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<UserProfilePage />} />
-        {/* Add more routes as needed */}
+        <Route path="/blog" element={<KnowYourBoots />} />
+       
       </Routes>
       </CartProvider>
     </AuthProvider>
