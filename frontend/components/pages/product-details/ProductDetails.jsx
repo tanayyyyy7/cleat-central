@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, ChevronDown } from 'lucide-react';
+import { Star, ChevronDown, Loader2 } from 'lucide-react';
 import NavBar from '../shared-components/NavBar';
 import ProductCarousel from './ProductCarousel';
 import { useCart } from '../../context/CartContext';
 import Footer from '../shared-components/Footer';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '../../context/AuthContext';
 
 export default function ProductDetails() {
   const { productId } = useParams();
+  const { isLoggedIn, verifyToken } = useAuth();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+  const { toast } = useToast();
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -26,9 +31,23 @@ export default function ProductDetails() {
       });
   }, [productId]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    await verifyToken();
+    if (!isLoggedIn) {
+      toast({
+        title: 'You must be logged in to add products to your cart.',
+        description: 'Please log in or sign up to continue.',
+        variant: 'destructive',
+      });
+      navigate('/login-user');
+      return;
+    }
     if (!selectedSize) {
-      alert('Please select a size');
+      toast({
+        title: 'Size not selected',
+        description: 'Please select a size before adding the product to the cart.',
+        variant: 'destructive',
+      });
       return;
     }
     addToCart({
@@ -39,11 +58,14 @@ export default function ProductDetails() {
       size: selectedSize,
       quantity: 1
     });
-    alert('Product added to cart');
+    toast({
+      title: 'Product added to cart',
+      description: 'Your product has been added to the cart.',
+    });
   };
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <Loader2 className="mr-2 h-1/2 w-1/2 animate-spin" />;
   }
 
   return (

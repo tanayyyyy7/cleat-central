@@ -3,6 +3,7 @@ import { Link, Element } from 'react-scroll';
 import BootType from './BootType';
 import NavBar from '../shared-components/NavBar';
 import Footer from '../shared-components/Footer';
+import { Button } from '@/components/ui/button';
 
 export default function KnowYourBoots() {
   return (
@@ -14,14 +15,18 @@ export default function KnowYourBoots() {
         <nav className="mb-8">
           <ul className="flex justify-center space-x-4">
             <li>
-              <Link to="surface-types" smooth={true} duration={500} className="cursor-pointer">
-                Surface Types
-              </Link>
+              <Button variant="outline">
+                <Link to="surface-types" smooth={true} duration={500} className="cursor-pointer">
+                  Surface Types
+                </Link>
+              </Button>
             </li>
             <li>
+              <Button variant="outline">
               <Link to="boot-styles" smooth={true} duration={500} className="cursor-pointer">
                 Boot Styles
               </Link>
+              </Button>
             </li>
           </ul>
         </nav>

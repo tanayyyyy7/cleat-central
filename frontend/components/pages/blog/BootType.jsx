@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton"
+import { Separator } from "@/components/ui/separator"
 
 const BootType = ({ title, description, type, value }) => {
     const [boots, setBoots] = useState([]);
@@ -30,6 +31,11 @@ const BootType = ({ title, description, type, value }) => {
     fetchBoots();
 }, [type, value]);
 
+const handleCardClick = (productId) => {
+  navigate(`/product-details/${productId}`); // Navigate to product-details route with the product ID
+};
+
+
   return (
     <Card className="mb-6">
       <CardHeader>
@@ -44,7 +50,7 @@ const BootType = ({ title, description, type, value }) => {
             <h4 className="font-semibold mb-2">Featured Boots:</h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {boots.map((boot, index) => (
-                <div key={index} className="flex flex-col items-center">
+                <div key={index} className="flex flex-col items-center" onClick={() => handleCardClick(product._id)}>
                   <img
                     src={boot.image}
                     alt={boot.name}

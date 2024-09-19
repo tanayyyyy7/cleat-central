@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, SlidersHorizontal } from 'lucide-react';
 import NavBar from '../shared-components/NavBar';
+import Footer from '../shared-components/Footer';
 import FilterContent from './FilterContent';
 import axios from 'axios';
 import ProductCardSkeleton from '../shared-components/ProductCardSkeleton';
@@ -165,30 +166,7 @@ export default function ProductsPage02() {
           </div>
         </div>
       </main>
-      <footer className="bg-muted py-8">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <NikeLogo width={60} height={24} className="w-12 h-auto mb-4" />
-              <div className="flex gap-4">
-                <FacebookIcon className="w-6 h-6" />
-                <TwitterIcon className="w-6 h-6" />
-                <InstagramIcon className="w-6 h-6" />
-              </div>
-            </div>
-            {['Products', 'Help', 'Company'].map((section, index) => (
-              <div key={index}>
-                <h4 className="font-bold mb-2">{section}</h4>
-                <ul className="space-y-1 text-sm">
-                  {['Item 1', 'Item 2', 'Item 3', 'Item 4'].map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </footer>
+     <Footer />
     </div>
   );
 }
