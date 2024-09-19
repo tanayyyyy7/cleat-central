@@ -38,6 +38,7 @@ export default function ProductDetails() {
         title: 'You must be logged in to add products to your cart.',
         description: 'Please log in or sign up to continue.',
         variant: 'destructive',
+        duration: 3000,
       });
       navigate('/login-user');
       return;
@@ -61,6 +62,7 @@ export default function ProductDetails() {
     toast({
       title: 'Product added to cart',
       description: 'Your product has been added to the cart.',
+      duration: 2000
     });
   };
 

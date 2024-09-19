@@ -49,8 +49,15 @@ export const CartProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // Save cart to localStorage whenever it changes
-    localStorage.setItem('cart', JSON.stringify(state.items));
+    const saveCart = () => {
+      localStorage.setItem('cart', JSON.stringify(state.items));
+    };
+
+    window.addEventListener('beforeunload', saveCart);
+
+    return () => {
+      window.removeEventListener('beforeunload', saveCart); //cleanup
+    };
   }, [state.items]);
 
   const addToCart = (item) => {

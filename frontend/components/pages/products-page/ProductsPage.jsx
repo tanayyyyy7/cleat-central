@@ -13,7 +13,7 @@ import axios from 'axios';
 import ProductCardSkeleton from '../shared-components/ProductCardSkeleton';
 import { useToast } from "@/hooks/use-toast";
 
-export default function ProductsPage02() {
+export default function ProductsPage() {
   const navigate = useNavigate();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
