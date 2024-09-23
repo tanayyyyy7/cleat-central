@@ -6,9 +6,10 @@ import morgan from 'morgan';
 import compression from 'compression';
 import connectToDB from './db/index.js';
 import cors from 'cors';
-import products from './routes/api/products/index.js';
-import user from './routes/api/user/index.js';
-import userProfile from './routes/api/userProfile/index.js';
+import productRoutes from './routes/api/products/index.js';
+import userRoutes from './routes/api/user/index.js';
+import cartRoutes from './routes/api/cart/index.js';
+import userProfileRoutes from './routes/api/userProfile/index.js';
 
 const app = express();
 
@@ -26,9 +27,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 
-app.use('/api/products', products);
-app.use('/api/user', user);
-app.use('/api/user-profile', userProfile);
+app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/user-profile', userProfileRoutes);
 
 // Handle all other routes and return the React app
 app.get('*', (req, res) => {

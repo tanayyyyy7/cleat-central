@@ -97,6 +97,18 @@ export const getUserProfile = async (token) => {
     }
 };
 
+export const getUserIDfromToken = async (token) => {
+    try {
+        const user = jwt.decode(token);
+        const userId = user.id;
+
+        return Promise.resolve(userId);
+
+    } catch (error) {
+        return Promise.reject({ error: 'Error fetching user ID:' });
+    }
+}
+
 export const updateUserProfile = async (editedDetails) => {
     try {
         const user = await User.findById(editedDetails._id);

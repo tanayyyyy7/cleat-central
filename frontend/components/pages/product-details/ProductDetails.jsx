@@ -10,6 +10,7 @@ import { useCart } from '../../context/CartContext';
 import Footer from '../shared-components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '../../context/AuthContext';
+import { ToastAction } from "@/components/ui/toast"
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -27,20 +28,33 @@ export default function ProductDetails() {
         setProduct(data.product);
       })
       .catch((error) => {
-        console.error('Error fetching product:', error);
+        toast({
+          title: 'Error fetching product details',
+          description: error.message,
+          variant: 'destructive',
+          duration: 3000,
       });
-  }, [productId]);
+  })
+}, [productId]);
 
   const handleAddToCart = async () => {
     await verifyToken();
+    const token = localStorage.getItem('token');
     if (!isLoggedIn) {
       toast({
         title: 'You must be logged in to add products to your cart.',
         description: 'Please log in or sign up to continue.',
         variant: 'destructive',
         duration: 3000,
+        action: (
+          <ToastAction
+            altText="Login"
+            onClick={() => navigate('/login-user')}
+          >
+            Login
+          </ToastAction>
+        )
       });
-      navigate('/login-user');
       return;
     }
     if (!selectedSize) {
@@ -62,7 +76,15 @@ export default function ProductDetails() {
     toast({
       title: 'Product added to cart',
       description: 'Your product has been added to the cart.',
-      duration: 2000
+      duration: 2000,
+      action: (
+        <ToastAction
+          altText="View Cart"
+          onClick={() => navigate('/cart')}
+        >
+          View Cart
+        </ToastAction>
+      )
     });
   };
 
