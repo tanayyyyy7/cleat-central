@@ -1,58 +1,31 @@
 // routes/api/cartRoutes.js
 import { Router } from 'express';
-import Cart from '../../../models/cart.js';
-import addToCart from './addToCart.js';
-import updateQuantity from './updateQuantity.js';
+import addToCartHandler from './add-to-cart.js';
+import updateQuantityHandler from './update-quantity.js';
 import accessCart from '../../../utils/accessCart.js';
-import getCart from './getCart.js';
+import getCartHandler from './get-cart.js';
+import removeItemHandler from './remove-item.js';
+import clearCartHandler from './clear-cart.js';
+import catchAll from '../catch-all.js';
 
 const router = Router();
 
 // Get cart
-router.get('/', accessCart, getCart);
+router.get('/', accessCart, getCartHandler);
 
 // Add item to cart
-router.post('/add', accessCart, addToCart)
+router.post('/add', accessCart, addToCartHandler)
 
 // Update item quantity
-router.put('/update', accessCart, updateQuantity);
+router.put('/update', accessCart, updateQuantityHandler);
 
 // Remove item from cart
-router.delete('/remove', accessCart, async (req, res) => {
-  try {
-    const { productId, size } = req.body;
-    const cart = await Cart.findOne({ userId: req.userId });
-
-    if (!cart) {
-      return res.status(404).json({ error: 'Cart not found' });
-    }
-
-    cart.items = cart.items.filter(
-      item => !(item.productId.toString() === productId && item.size === size)
-    );
-
-    await cart.save();
-    res.json(cart);
-  } catch (error) {
-    res.status(500).json({ error: 'Error removing item from cart' });
-  }
-});
+router.delete('/remove', accessCart, removeItemHandler);
 
 // Clear cart
-router.delete('/clear', accessCart, async (req, res) => {
-  try {
-    const cart = await Cart.findOne({ userId: req.userId });
+router.delete('/clear', accessCart, clearCartHandler );
 
-    if (!cart) {
-      return res.status(404).json({ error: 'Cart not found' });
-    }
-
-    cart.items = [];
-    await cart.save();
-    res.json(cart);
-  } catch (error) {
-    res.status(500).json({ error: 'Error clearing cart' });
-  }
-});
+//Fallback route
+router.use(catchAll);
 
 export default router;
