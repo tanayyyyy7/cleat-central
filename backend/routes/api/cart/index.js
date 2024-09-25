@@ -1,39 +1,24 @@
 // routes/api/cartRoutes.js
 import { Router } from 'express';
 import Cart from '../../../models/cart.js';
-import { getUserIDfromToken } from '../../../controllers/userController.js';
 import addToCart from './addToCart.js';
 import updateQuantity from './updateQuantity.js';
+import accessCart from '../../../utils/accessCart.js';
+import getCart from './getCart.js';
 
 const router = Router();
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (token == null) return res.sendStatus(401);
-
-  getUserIDfromToken(token)
-    .then((userId) => {
-      req.userId = userId;
-      next();
-    })
-    .catch((err) => {
-      res.status(401).json({ err });
-    });
-};
-
 // Get cart
-router.get('/', authenticateToken, addToCart);
+router.get('/', accessCart, getCart);
 
 // Add item to cart
-router.post('/add', authenticateToken, addToCart)
+router.post('/add', accessCart, addToCart)
 
 // Update item quantity
-router.put('/update', authenticateToken, updateQuantity);
+router.put('/update', accessCart, updateQuantity);
 
 // Remove item from cart
-router.delete('/remove', authenticateToken, async (req, res) => {
+router.delete('/remove', accessCart, async (req, res) => {
   try {
     const { productId, size } = req.body;
     const cart = await Cart.findOne({ userId: req.userId });
@@ -54,7 +39,7 @@ router.delete('/remove', authenticateToken, async (req, res) => {
 });
 
 // Clear cart
-router.delete('/clear', authenticateToken, async (req, res) => {
+router.delete('/clear', accessCart, async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.userId });
 

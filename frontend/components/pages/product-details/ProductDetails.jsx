@@ -65,7 +65,7 @@ export default function ProductDetails() {
       });
       return;
     }
-    addToCart({
+    await addToCart({
       _id: product._id,
       name: product.name,
       price: product.price,

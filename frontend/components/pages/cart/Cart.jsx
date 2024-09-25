@@ -87,7 +87,7 @@ export default function Cart() {
     );
   }
 
-  if (cartItems.length === 0) {
+  if (cartItems?.length === 0) {
     return (
       <>
         <NavBar />

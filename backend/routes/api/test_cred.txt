@@ -1,0 +1,17 @@
+{
+    "email": "tanay19@gmail.com",
+    "password": "tanay@19",
+    "jwt-token": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTZmODc4ZmVkYTM5MzI3ODA2Y2RkOSIsImVtYWlsIjoidGFuYXkxOUBnbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJUYW5heSIsImxhc3ROYW1lIjoiR3VwdGUiLCJpYXQiOjE3MjcyNTk5NDZ9.UabCn2_YfrL6_vy467XLbRj3SvXjH95Nfr8gPYVzlkA 
+}
+
+//Cart Data:
+
+
+     {
+      "name": "Nike Mercurial Superfly 10 Elite Blueprint",
+      "price": 23795,
+      "image": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/cca8c073-da7c-4a6b-95b6-f68715518c08/ZM+SUPERFLY+10+ELITE+F+FG.png",
+      "size": "UK 9",
+      "quantity": 1,
+      "_id": "66f3036b772a23a5728ee76f"
+    }
