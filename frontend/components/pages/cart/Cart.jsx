@@ -125,7 +125,13 @@ export default function Cart() {
     );
   }
 
+  const handleItemClick = (productId) => {
+    navigate(`/product-details/${productId}`);
+  };
+
+  //Compute the total price: no dis as of now
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+ 
 
   return (
     <Layout>
@@ -137,11 +143,11 @@ export default function Cart() {
               <Card key={`${item.productId}-${item.size}`} className="overflow-hidden">
                 <div className="flex flex-col sm:flex-row">
                   <div className="w-full h-48 sm:w-1/3">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" onClick={() => handleItemClick(item.productId)}/>
                   </div>
                   <div className="flex-grow p-4 flex flex-col justify-between">
                     <div>
-                      <h2 className="text-xl font-semibold">{item.name}</h2>
+                      <h2 className="text-xl font-semibold hover:underline" onClick={() => handleItemClick(item.productId)}>{item.name}</h2>
                       <p className="text-muted-foreground">Size: {item.size}</p>
                       <p className="font-bold mt-2">₹ {item.price.toFixed(2)}</p>
                     </div>

@@ -20,7 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, Heart, ShoppingBag, ChevronDown, Menu, LogIn, CircleUser, User } from 'lucide-react'
 import { ModeToggle } from "@/components/mode-toggle"
 import { useAuth } from '../../context/AuthContext'
-
+import { useTheme } from "@/components/themeProvider"
 
 const MenuContent = () => (
     <div className="space-y-4">
@@ -31,8 +31,10 @@ const MenuContent = () => (
     </div>
 )
 
+
 export default function NavBar() {
     const navigate = useNavigate();
+    const { theme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isLoggedIn, verifyToken, logout } = useAuth();
 
@@ -40,18 +42,22 @@ export default function NavBar() {
         const checkToken = async () => {
           await verifyToken();
         };
-    
         checkToken();
       }, []);
+
 
       const handleUserLogout = () => {
         logout();
         alert('You have been logged out.')
       };
+      
 
     return (
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between border-b">
-            <NikeLogo width={60} height={24} className="w-12 h-auto" />
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between border-b">
+            <div className='flex items-center'> 
+            <p className="text-md hidden sm:block">CleatsCentral</p>
+            <img src={`assets/brand-logo-${theme}.svg`} width={60} height={24} className="w-12 h-auto" />
+            </div>
             <div className="flex items-center space-x-4">
                 <nav className="hidden md:flex space-x-4">
                     <a href="/" className="text-md hover:underline">Home</a>
