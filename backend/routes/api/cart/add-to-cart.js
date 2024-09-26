@@ -1,13 +1,14 @@
 import { addItemToCart } from "../../../controllers/cartController.js";
 
 export default async (req, res) => {
-    try {
-      const { productId, name, price, image, size, quantity } = req.body;
-      const userId = req.userId;
-      const updatedCart = await addItemToCart(userId, productId, name, price, image, size, quantity);
+  const { productId, name, price, image, size, quantity } = req.body;
+  const userId = req.userId;
+
+  addItemToCart(userId, { productId, name, price, image, size, quantity })
+    .then(updatedCart => {
       res.json(updatedCart);
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  };
-  
+    })
+    .catch(error => {
+      res.status(500).json({ error: error.message || 'Error adding item to cart' });
+    });
+};

@@ -1,4 +1,7 @@
+// controllers/cartController.js
 import Cart from "../models/cart.js";
+import Product from "../models/product.js";
+import mongoose from 'mongoose';
 
 //Get Cart
 export const getCart = async (userId) => {
@@ -14,76 +17,82 @@ export const getCart = async (userId) => {
   }
 };
 
-
-//Add Item to Cart
-export const addItemToCart = async (userId, productId, name, price, image, size, quantity) => {
+export const addItemToCart = async (userId, item) => {
   try {
     let cart = await Cart.findOne({ userId });
-
     if (!cart) {
       cart = new Cart({ userId, items: [] });
-      await cart.save();
+    }
+
+    const product = await Product.findById(item.productId);
+    if (!product) {
+      return Promise.reject("Product not found");
     }
 
     const existingItemIndex = cart.items.findIndex(
-      item => item.productId === productId && item.size === size
+      cartItem => cartItem.productId.equals(item.productId) && cartItem.size === item.size
     );
 
     if (existingItemIndex > -1) {
-      cart.items[existingItemIndex].quantity += quantity;
+      cart.items[existingItemIndex].quantity += item.quantity;
     } else {
-      cart.items.push({ productId, name, price, image, size, quantity });
+     
+      cart.items.push({
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0].src,
+        size: item.size,
+        quantity: item.quantity
+      });
     }
-    await Cart.findOneAndUpdate({ userId }, cart);
 
+    await cart.save();
+    return Promise.resolve(cart);
   } catch (error) {
-    res.status(500).json({ error: 'Error adding item to cart' });
+    return Promise.reject(error);
   }
 };
 
-//Update Item Quantity
+
 export const updateQuantity = async (userId, productId, size, quantity) => {
   try {
     const cart = await Cart.findOne({ userId });
-
     if (!cart) {
-      throw new Error("Cart not found");
+      return Promise.reject("Cart not found");
     }
 
     const itemIndex = cart.items.findIndex(
-      item => item.productId === productId && item.size === size
+      item => item.productId.equals(productId) && item.size === size
     );
 
     if (itemIndex > -1) {
       cart.items[itemIndex].quantity = quantity;
-      await Cart.findOneAndUpdate({ userId }, cart);
+      await cart.save();
       return Promise.resolve(cart);
     } else {
-      throw new Error("Item not found in cart");
+      return Promise.reject("Item not found in cart");
     }
   } catch (error) {
     return Promise.reject(error);
   }
 };
 
-
 export const removeItemFromCart = async (userId, productId, size) => {
   try {
     const cart = await Cart.findOne({ userId });
-
     if (!cart) {
-      return res.status(404).json({ error: 'Cart not found' });
+      return Promise.reject("Cart not found");
     }
 
     cart.items = cart.items.filter(
-      item => !(item.productId === productId && item.size === size)
+      item => !(item.productId.equals(productId) && item.size === size)
     );
 
-    await Cart.findOneAndUpdate({ userId }, cart);
-
+    await cart.save();
     return Promise.resolve(cart);
   } catch (error) {
-    return Promise.reject(error);
+    return Promise.reject("Error removing item from cart");
   }
 };
 
@@ -99,7 +108,7 @@ export const clearCart = async (userId) => {
     await Cart.findOneAndUpdate({ userId }, cart);
 
     return Promise.resolve(cart);
-  }catch (error) {
+  } catch (error) {
     return Promise.reject(error);
   }
 };

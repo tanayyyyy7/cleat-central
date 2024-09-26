@@ -1,5 +1,22 @@
+// models/cart.js
 import { Schema, model } from 'mongoose';
 
+const CartItemSchema = new Schema({
+  productId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true
+  },
+  name: String,
+  price: Number,
+  image: String,
+  size: String,
+  quantity: {
+    type: Number,
+    required: true,
+    min: 1
+  }
+}, { _id: false });
 
 const CartSchema = new Schema({
   userId: {
@@ -8,22 +25,7 @@ const CartSchema = new Schema({
     required: true,
     unique: true
   },
-  items: [{
-    productId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Product',
-      required: true
-    },
-    name: String,
-    price: Number,
-    image: String,
-    size: String,
-    quantity: {
-      type: Number,
-      required: true,
-      min: 1
-    }
-  }],
+  items: [CartItemSchema],
   createdAt: {
     type: Date,
     default: Date.now

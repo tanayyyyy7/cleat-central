@@ -1,11 +1,13 @@
 import { clearCart } from "../../../controllers/cartController.js";
 
 export default async (req, res) => {
-    try {
-      const userId = req.userId;
-      const updatedCart = await clearCart(userId);
+  const userId = req.userId;
+
+  await clearCart(userId)
+    .then(updatedCart => {
       res.json(updatedCart);
-    } catch (error) {
-      res.status(500).json({ error });
-    }
-  }
+    })
+    .catch(error => {
+      res.status(500).json({ error: error.message || 'Error clearing cart' });
+    });
+};

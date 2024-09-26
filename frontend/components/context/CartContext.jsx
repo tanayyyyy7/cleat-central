@@ -1,3 +1,4 @@
+// CartContext.jsx
 import React, { createContext, useContext, useReducer, useCallback } from 'react';
 import axios from 'axios';
 
@@ -27,7 +28,6 @@ export const CartProvider = ({ children }) => {
       });
       dispatch({ type: 'SET_CART', payload: response.data.items });
     } catch (error) {
-      console.error('Error fetching cart:', error);
       dispatch({ type: 'SET_ERROR', payload: 'Error fetching cart' });
     }
   }, []);
@@ -40,7 +40,6 @@ export const CartProvider = ({ children }) => {
       });
       dispatch({ type: 'SET_CART', payload: response.data.items });
     } catch (error) {
-      console.error('Error adding item to cart:', error);
       dispatch({ type: 'SET_ERROR', payload: 'Error adding item to cart' });
     }
   }, []);
@@ -48,12 +47,12 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = useCallback(async (productId, size) => {
     dispatch({ type: 'SET_LOADING' });
     try {
-      const response = await axios.delete('/api/cart/remove', { productId, size }, {
+      const response = await axios.delete('/api/cart/remove', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        data: { productId, size }
       });
       dispatch({ type: 'SET_CART', payload: response.data.items });
     } catch (error) {
-      console.error('Error removing item from cart:', error);
       dispatch({ type: 'SET_ERROR', payload: 'Error removing item from cart' });
     }
   }, []);
@@ -66,21 +65,7 @@ export const CartProvider = ({ children }) => {
       });
       dispatch({ type: 'SET_CART', payload: response.data.items });
     } catch (error) {
-      console.error('Error updating item quantity:', error);
       dispatch({ type: 'SET_ERROR', payload: 'Error updating item quantity' });
-    }
-  }, []);
-
-  const clearCart = useCallback(async () => {
-    dispatch({ type: 'SET_LOADING' });
-    try {
-      const response = await axios.delete('/api/cart/clear', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
-      dispatch({ type: 'SET_CART', payload: response.data.items });
-    } catch (error) {
-      console.error('Error clearing cart:', error);
-      dispatch({ type: 'SET_ERROR', payload: 'Error clearing cart' });
     }
   }, []);
 
@@ -91,7 +76,6 @@ export const CartProvider = ({ children }) => {
     addToCart,
     removeFromCart,
     updateQuantity,
-    clearCart,
     fetchCart
   };
 

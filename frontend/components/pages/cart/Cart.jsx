@@ -1,3 +1,4 @@
+// Cart.jsx
 import React, { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,7 @@ export default function Cart() {
   const navigate = useNavigate();
   const { cart, loading, error, removeFromCart, updateQuantity, fetchCart } = useCart();
   const { toast } = useToast();
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [ isInitialLoading, setIsInitialLoading ] = useState(true);
 
   const initializeCart = useCallback(async () => {
     setIsInitialLoading(true);
@@ -49,16 +50,29 @@ export default function Cart() {
   }, [error]);
 
   const handleUpdateQuantity = async (productId, size, newQuantity) => {
-    console.log(`Updating ${productId} : ${size} from cart`);
-    await updateQuantity(productId, size, newQuantity);
+    try {
+      await updateQuantity(productId.toString(), size, newQuantity);
+    } catch (error) {
+      toast({
+        title: "Error updating quantity",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   const handleRemoveFromCart = async (productId, size) => {
-    console.log(`Removing ${productId} : ${size} from cart`);
-    await removeFromCart(productId, size);
+    try {
+      await removeFromCart(productId.toString(), size);
+    } catch (error) {
+      toast({
+        title: "Error removing item",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
-  
   if (isInitialLoading) {
     return (
       <Layout>
@@ -90,7 +104,6 @@ export default function Cart() {
     );
   }
 
-
   if (!cart || cart.length === 0) {
     return (
       <Layout>
@@ -121,7 +134,7 @@ export default function Cart() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             {cart.map((item) => (
-              <Card key={`${item.productId}`} className="overflow-hidden">
+              <Card key={`${item.productId}-${item.size}`} className="overflow-hidden">
                 <div className="flex flex-col sm:flex-row">
                   <div className="w-full h-48 sm:w-1/3">
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover" />

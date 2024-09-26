@@ -1,3 +1,4 @@
+// ProductDetails.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -33,13 +34,12 @@ export default function ProductDetails() {
           description: error.message,
           variant: 'destructive',
           duration: 3000,
+        });
       });
-  })
-}, [productId]);
+  }, [productId, toast]);
 
   const handleAddToCart = async () => {
     await verifyToken();
-    const token = localStorage.getItem('token');
     if (!isLoggedIn) {
       toast({
         title: 'You must be logged in to add products to your cart.',
@@ -47,10 +47,7 @@ export default function ProductDetails() {
         variant: 'destructive',
         duration: 3000,
         action: (
-          <ToastAction
-            altText="Login"
-            onClick={() => navigate('/login-user')}
-          >
+          <ToastAction altText="Login" onClick={() => navigate('/login-user')}>
             Login
           </ToastAction>
         )
@@ -65,27 +62,33 @@ export default function ProductDetails() {
       });
       return;
     }
-    await addToCart({
-      _id: product._id,
-      name: product.name,
-      price: product.price,
-      image: product.images[0].src,
-      size: selectedSize,
-      quantity: 1
-    });
-    toast({
-      title: 'Product added to cart',
-      description: 'Your product has been added to the cart.',
-      duration: 2000,
-      action: (
-        <ToastAction
-          altText="View Cart"
-          onClick={() => navigate('/cart')}
-        >
-          View Cart
-        </ToastAction>
-      )
-    });
+    try {
+      await addToCart({
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0].src,
+        size: selectedSize,
+        quantity: 1
+      });
+      toast({
+        title: 'Product added to cart',
+        description: 'Your product has been added to the cart.',
+        duration: 2000,
+        action: (
+          <ToastAction altText="View Cart" onClick={() => navigate('/cart')}>
+            View Cart
+          </ToastAction>
+        )
+      });
+    } catch (error) {
+      toast({
+        title: 'Error adding product to cart',
+        description: error.message,
+        variant: 'destructive',
+        duration: 3000,
+      });
+    }
   };
 
   if (!product) {
@@ -97,21 +100,17 @@ export default function ProductDetails() {
       <NavBar />
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Image Gallery */}
           <div className="lg:w-2/3">
             <ProductCarousel images={product.images} />
           </div>
-          {/* Product Info */}
           <div className="lg:w-1/3 space-y-6">
             <div>
               <h1 className="text-3xl font-bold">{product.name}</h1>
               <p className="text-lg text-muted-foreground">{product.surfaceType} {product.shoeHeight} Football Boot</p>
             </div>
-
             <div>
               <p className="text-2xl font-bold">MRP: &#8377; {product.price}.00</p>
             </div>
-
             <div className="space-y-2">
               <p className="font-semibold">Select Size</p>
               <div className="grid grid-cols-3 gap-2">
@@ -127,9 +126,7 @@ export default function ProductDetails() {
                 ))}
               </div>
             </div>
-
             <Button className="w-full text-lg py-6" onClick={handleAddToCart}>Add to Bag</Button>
-
             <div className="space-y-4">
               <p>
                 <span className='block italic'>{product.brand} says: </span>
@@ -140,7 +137,6 @@ export default function ProductDetails() {
                 <li>Style: DJ5625-146</li>
               </ul>
             </div>
-
             <div className="flex items-center space-x-2">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
@@ -151,8 +147,6 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
-
-        {/* Tabs Section */}
         <Tabs defaultValue="reviews" className="mt-12">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
