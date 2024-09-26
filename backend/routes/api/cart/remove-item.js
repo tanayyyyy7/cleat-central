@@ -1,3 +1,5 @@
+import { removeItemFromCart } from "../../../controllers/cartController.js";
+
 export default async (req, res) => {
     try {
         const { productId, size } = req.body;

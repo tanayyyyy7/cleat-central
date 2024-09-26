@@ -7,7 +7,7 @@ export default async (req, res) => {
       const updatedCart = await addItemToCart(userId, productId, name, price, image, size, quantity);
       res.json(updatedCart);
     } catch (error) {
-      res.status(500).json({ error: 'Error adding item to cart' });
+      res.status(500).json(error);
     }
   };
   

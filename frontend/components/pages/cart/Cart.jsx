@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,18 +14,21 @@ import { ToastAction } from "@/components/ui/toast"
 export default function Cart() {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
-  const { cart, error, removeFromCart, updateQuantity, fetchCart } = useCart();
+  const { cart, loading, error, removeFromCart, updateQuantity, fetchCart } = useCart();
   const { toast } = useToast();
+  const [isInitialLoading, setIsInitialLoading] = useState(false);
+
+  const initializeCart = useCallback(async () => {
+    setIsInitialLoading(true);
+    if (isLoggedIn) {
+      await fetchCart();
+    }
+    setIsInitialLoading(false);
+  }, [isLoggedIn, fetchCart]);
 
   useEffect(() => {
-    const initializeCart = async () => {
-      if (isLoggedIn) {
-        await fetchCart();
-      }
-    };
-
     initializeCart();
-  }, []);
+  }, [initializeCart]);
 
   useEffect(() => {
     if (error) {
@@ -45,6 +48,27 @@ export default function Cart() {
     }
   }, [error]);
 
+  const handleUpdateQuantity = async (productId, size, newQuantity) => {
+    console.log(`Updating ${productId} : ${size} from cart`);
+    await updateQuantity(productId, size, newQuantity);
+  };
+
+  const handleRemoveFromCart = async (productId, size) => {
+    console.log(`Removing ${productId} : ${size} from cart`);
+    await removeFromCart(productId, size);
+  };
+
+  
+  if (isInitialLoading) {
+    return (
+      <Layout>
+        <div className="flex-grow flex items-center justify-center">
+          <Loader2 className="h-16 w-16 animate-spin" />
+        </div>
+      </Layout>
+    );
+  }
+  
   if (!isLoggedIn) {
     return (
       <Layout>
@@ -66,17 +90,8 @@ export default function Cart() {
     );
   }
 
-  if (!cart) {
-    return (
-      <Layout>
-        <div className="flex-grow flex items-center justify-center">
-          <Loader2 className="h-16 w-16 animate-spin" />
-        </div>
-      </Layout>
-    );
-  }
 
-  if (cart?.length === 0) {
+  if (!cart || cart.length === 0) {
     return (
       <Layout>
         <Card className="w-full max-w-md">
@@ -106,7 +121,7 @@ export default function Cart() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             {cart.map((item) => (
-              <Card key={`${item.productId}-${item.size}`} className="overflow-hidden">
+              <Card key={`${item.productId}`} className="overflow-hidden">
                 <div className="flex flex-col sm:flex-row">
                   <div className="w-full h-48 sm:w-1/3">
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
@@ -119,15 +134,30 @@ export default function Cart() {
                     </div>
                     <div className="flex items-center justify-between mt-4">
                       <div className="flex items-center space-x-2">
-                        <Button variant="outline" size="icon" onClick={() => updateQuantity(item.productId, item.size, Math.max(1, item.quantity - 1))}>
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          onClick={() => handleUpdateQuantity(item.productId, item.size, Math.max(1, item.quantity - 1))}
+                          disabled={loading}
+                        >
                           <Minus className="h-4 w-4" />
                         </Button>
                         <span>{item.quantity}</span>
-                        <Button variant="outline" size="icon" onClick={() => updateQuantity(item.productId, item.size, item.quantity + 1)}>
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          onClick={() => handleUpdateQuantity(item.productId, item.size, item.quantity + 1)}
+                          disabled={loading}
+                        >
                           <Plus className="h-4 w-4" />
                         </Button>
                       </div>
-                      <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.productId, item.size)}>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => handleRemoveFromCart(item.productId, item.size)}
+                        disabled={loading}
+                      >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
