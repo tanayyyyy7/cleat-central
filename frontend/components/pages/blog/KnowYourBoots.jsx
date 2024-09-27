@@ -11,7 +11,7 @@ export default function KnowYourBoots() {
       <NavBar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8 text-center">Know Your Boots</h1>
-        
+
         <nav className="mb-8">
           <ul className="flex justify-center space-x-4">
             <li>
@@ -23,14 +23,14 @@ export default function KnowYourBoots() {
             </li>
             <li>
               <Button variant="outline">
-              <Link to="boot-styles" smooth={true} duration={500} className="cursor-pointer">
-                Boot Styles
-              </Link>
+                <Link to="boot-styles" smooth={true} duration={500} className="cursor-pointer">
+                  Boot Styles
+                </Link>
               </Button>
             </li>
           </ul>
         </nav>
-        
+
         <Element name="surface-types">
           <h2 className="text-2xl font-semibold mb-4">Surface Types</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
@@ -41,11 +41,18 @@ export default function KnowYourBoots() {
               value="FG"
             />
             <BootType
+              title="MG (MultiGround)"
+              description="Versatile boots suitable for various playing surfaces. These boots feature a combination of molded and bladed studs, providing traction on both firm ground and artificial turf."
+              type="surfaceType"
+              value="MG"
+            />
+            <BootType
               title="TF (Turf)"
               description="Ideal for artificial turf or hard ground. These boots have numerous small rubber studs for excellent traction on harder surfaces."
               type="surfaceType"
               value="TF"
             />
+
             <BootType
               title="IC (Indoor Court)"
               description="Designed for indoor courts or futsal. These boots have flat, non-marking rubber soles for optimal grip on smooth indoor surfaces."
@@ -54,7 +61,7 @@ export default function KnowYourBoots() {
             />
           </div>
         </Element>
-  
+
         <Element name="boot-styles">
           <h2 className="text-2xl font-semibold mb-4">Boot Styles</h2>
           <div className="grid gap-6 md:grid-cols-2">

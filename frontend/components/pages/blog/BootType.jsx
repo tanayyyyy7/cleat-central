@@ -3,11 +3,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
+import { useNavigate } from 'react-router-dom';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
+
 
 const BootType = ({ title, description, type, value }) => {
     const [boots, setBoots] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
   
     useEffect(() => {
       const fetchBoots = async () => {
@@ -50,7 +60,10 @@ const handleCardClick = (productId) => {
             <h4 className="font-semibold mb-2">Featured Boots:</h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {boots.map((boot, index) => (
-                <div key={index} className="flex flex-col items-center" onClick={() => handleCardClick(product._id)}>
+                <div key={index} className="flex flex-col sm:flex-row items-center" onClick={() => handleCardClick(boot._id)}>
+                 <TooltipProvider>
+                  <Tooltip>
+                  <TooltipTrigger asChild>
                   <img
                     src={boot.image}
                     alt={boot.name}
@@ -58,7 +71,12 @@ const handleCardClick = (productId) => {
                     height={150}
                     className="object-cover rounded-md"
                   />
-                  <p className="mt-2 text-sm text-center">{boot.name}</p>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-sm">{boot.name}</p>
+                  </TooltipContent>
+                  </Tooltip>
+                  </TooltipProvider>
                 </div>
               ))}
             </div>

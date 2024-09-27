@@ -134,16 +134,7 @@ export default function ProductDetails() {
               </p>
               <ul className="list-disc list-inside space-y-2">
                 <li>Colour Shown: {product.colour}</li>
-                <li>Style: DJ5625-146</li>
               </ul>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-current text-yellow-400" />
-                ))}
-              </div>
-              <span className="text-sm text-muted-foreground">(123)</span>
             </div>
           </div>
         </div>
