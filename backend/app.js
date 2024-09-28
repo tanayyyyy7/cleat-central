@@ -5,6 +5,7 @@ import { createWriteStream } from 'fs';
 import morgan from 'morgan';
 import compression from 'compression';
 import connectToDB from './db/index.js';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import productRoutes from './routes/api/products/index.js';
 import userRoutes from './routes/api/user/index.js';
@@ -25,7 +26,7 @@ app.use('/assets', express.static(join(__dirname, '../frontend/assets')));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+app.use(cookieParser());
 
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);

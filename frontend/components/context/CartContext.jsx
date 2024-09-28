@@ -1,4 +1,3 @@
-// CartContext.jsx
 import React, { createContext, useContext, useReducer, useCallback } from 'react';
 import axios from 'axios';
 
@@ -23,9 +22,7 @@ export const CartProvider = ({ children }) => {
   const fetchCart = useCallback(async () => {
     dispatch({ type: 'SET_LOADING' });
     try {
-      const response = await axios.get('/api/cart', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
+      const response = await axios.get('/api/cart', { withCredentials: true });
       dispatch({ type: 'SET_CART', payload: response.data.items });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Error fetching cart' });
@@ -35,9 +32,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = useCallback(async (item) => {
     dispatch({ type: 'SET_LOADING' });
     try {
-      const response = await axios.post('/api/cart/add', item, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
+      const response = await axios.post('/api/cart/add', item, { withCredentials: true });
       dispatch({ type: 'SET_CART', payload: response.data.items });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Error adding item to cart' });
@@ -48,7 +43,7 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: 'SET_LOADING' });
     try {
       const response = await axios.delete('/api/cart/remove', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        withCredentials: true,
         data: { productId, size }
       });
       dispatch({ type: 'SET_CART', payload: response.data.items });
@@ -60,9 +55,7 @@ export const CartProvider = ({ children }) => {
   const updateQuantity = useCallback(async (productId, size, quantity) => {
     dispatch({ type: 'SET_LOADING' });
     try {
-      const response = await axios.put('/api/cart/update', { productId, size, quantity }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
+      const response = await axios.put('/api/cart/update', { productId, size, quantity }, { withCredentials: true });
       dispatch({ type: 'SET_CART', payload: response.data.items });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Error updating item quantity' });

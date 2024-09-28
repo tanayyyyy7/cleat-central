@@ -36,14 +36,14 @@ export default function NavBar() {
     const navigate = useNavigate();
     const { theme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { isLoggedIn, verifyToken, logout } = useAuth();
+    const { isLoggedIn, logout } = useAuth();
 
-    useEffect(() => {
-        const checkToken = async () => {
-          await verifyToken();
-        };
-        checkToken();
-      }, []);
+    // useEffect(() => {
+    //     const checkToken = async () => {
+    //       await verifyToken();
+    //     };
+    //     checkToken();
+    //   }, []);
 
 
       const handleUserLogout = () => {

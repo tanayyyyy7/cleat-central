@@ -3,38 +3,31 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
-import { User, Mail, Phone, MapPin, Briefcase, House } from 'lucide-react';
+import { User, Mail, Phone, MapPin, House } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import { useToast } from "@/hooks/use-toast";
 
 export default function UserProfile() {
-  const { isLoggedIn, verifyToken, logout } = useAuth();
+  const { isLoggedIn, user, checkAuthStatus, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [notification, setNotification] = useState(null);
   const [userDetails, setUserDetails] = useState({});
-  const [editedDetails, setEditedDetails] = useState({ ...userDetails });
+  const [editedDetails, setEditedDetails] = useState({});
   const { toast } = useToast();
 
   useEffect(() => {
-    fetchUserProfile();
-    console.log('Current userDetails:', userDetails);
+    if (isLoggedIn) {
+      fetchUserProfile();
+    }
   }, [isLoggedIn]);
 
-
   const fetchUserProfile = async () => {
-    await verifyToken();
-    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
-    axios.get('/api/user-profile/', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    }).then((response) => {
+    try {
+      const response = await axios.get('/api/user-profile/', { withCredentials: true });
       setUserDetails(response.data.userProfile);
       setEditedDetails(response.data.userProfile);
-    }).catch((error) => {
+    } catch (error) {
       toast({
         title: "Oops!",
         description: "Error fetching profile. Please try again later.",
@@ -42,7 +35,7 @@ export default function UserProfile() {
       });
       setUserDetails({});
       setEditedDetails({});
-    });
+    }
   };
 
   const handleEdit = () => {
@@ -51,30 +44,23 @@ export default function UserProfile() {
   };
 
   const handleSave = async () => {
-    await verifyToken();
-    const token = localStorage.getItem('token');
-    axios.post('/api/user-profile/',
-      editedDetails,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        }
-      }
-    ).then((res) => {
-      setUserDetails(res.data.updatedUser);
+    try {
+      const response = await axios.post('/api/user-profile/', editedDetails, { withCredentials: true });
+      setUserDetails(response.data.updatedUser);
       setIsEditing(false);
       toast({
         title: "Profile Updated",
         description: "Your profile has been successfully updated.",
       });
-    }).catch((error) => {
+      checkAuthStatus(); // Update the user info in AuthContext
+    } catch (error) {
       console.error('Error updating profile:', error);
       toast({
         title: "Error",
         description: "Failed to update profile",
         variant: "destructive",
       });
-    });
+    }
   };
 
   const handleCancel = () => {
@@ -86,6 +72,10 @@ export default function UserProfile() {
     const { name, value } = e.target;
     setEditedDetails(prev => ({ ...prev, [name]: value }));
   };
+
+  if (!isLoggedIn) {
+    return <div>Please log in to view your profile.</div>;
+  }
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -131,18 +121,7 @@ export default function UserProfile() {
           <Mail className="h-6 w-6 text-gray-500" />
           <div className="flex-grow">
             <Label htmlFor="email">Email</Label>
-            {isEditing ? (
-              <Input
-                disabled
-                id="email"
-                name="email"
-                type="email"
-                value={editedDetails.email}
-                onChange={handleChange}
-              />
-            ) : (
-              <p>{userDetails.email}</p>
-            )}
+            <p>{userDetails.email}</p>
           </div>
         </div>
         <div className="flex items-center space-x-4">

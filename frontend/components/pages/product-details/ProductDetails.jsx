@@ -15,7 +15,7 @@ import { ToastAction } from "@/components/ui/toast"
 
 export default function ProductDetails() {
   const { productId } = useParams();
-  const { isLoggedIn, verifyToken } = useAuth();
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -39,7 +39,6 @@ export default function ProductDetails() {
   }, [productId, toast]);
 
   const handleAddToCart = async () => {
-    await verifyToken();
     if (!isLoggedIn) {
       toast({
         title: 'You must be logged in to add products to your cart.',

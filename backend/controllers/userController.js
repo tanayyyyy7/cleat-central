@@ -1,133 +1,175 @@
 import User from "../models/user.js";
 import jwt from 'jsonwebtoken';
 
-const sign = obj => new Promise((resolve, reject) => {
-    jwt.sign(obj, process.env.jwtPrivateKey, (err, token) => {
-        if (err) return reject(err);
+const sign = (obj, expiresIn = '15m') => {
+  return jwt.sign(obj, process.env.JWT_SECRET, { expiresIn });
+};
 
-        return resolve(token);
+const verify = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET);
+};
+
+const setTokenCookie = (res, token, name, maxAge) => {
+  res.cookie(name, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: maxAge * 1000
+  });
+};
+
+export const signUpUser = async (userData, res) => {
+  try {
+    const user = await User.create(userData);
+    const token = sign({
+      id: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
     });
-});
-const verify = token => new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.jwtPrivateKey, err => {
-        if (err) return reject(err);
-        return resolve();
+
+    const refreshToken = sign({ id: user._id }, '7d');
+    user.refreshToken = refreshToken;
+    await user.save();
+
+    setTokenCookie(res, token, 'token', 15 * 60);
+    setTokenCookie(res, refreshToken, 'refreshToken', 7 * 24 * 60 * 60);
+
+    return {
+      user: {
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      }
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const loginUser = async ({ email, password }, res) => {
+  try {
+    const user = await User.findOne({ email });
+    if (!user || !(await user.matchPassword(password))) {
+      throw new Error('Invalid email or password');
+    }
+
+    const token = sign({
+      id: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
     });
-});
 
-export const signUpUser = async ({ firstName, lastName, email, password }) => {
-    try {
-        const user = await User.create({ firstName, lastName, email, password });
-        const token = await sign({
-            id: user._id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-        });
+    const refreshToken = sign({ id: user._id }, '7d');
+    user.refreshToken = refreshToken;
+    await user.save();
 
-        return Promise.resolve({
-            token,
-            user: {
-                id: user._id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-            }
-        });
-    } catch (error) {
-        return Promise.reject(error);
-    }
+    setTokenCookie(res, token, 'token', 15 * 60);
+    setTokenCookie(res, refreshToken, 'refreshToken', 7 * 24 * 60 * 60);
+
+    return {
+      user: {
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      }
+    };
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const loginUser = async ({ email, password }) => {
-    try {
-        const user = await User.findOne({ email });
-        await user.matchPassword(password);
-        const token = await sign({
-            id: user._id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-        });
+export const refreshToken = async (refreshToken, res) => {
+  try {
+    const decoded = verify(refreshToken);
+    const user = await User.findById(decoded.id);
 
-        return Promise.resolve({
-            token,
-            user: {
-                id: user._id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-            }
-        });
-    } catch (error) {
-        return Promise.reject({ error });
+    if (!user || user.refreshToken !== refreshToken) {
+      throw new Error("Invalid refresh token");
     }
+
+    const newToken = sign({
+      id: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
+
+    const newRefreshToken = sign({ id: user._id }, '7d');
+    user.refreshToken = newRefreshToken;
+    await user.save();
+
+    setTokenCookie(res, newToken, 'token', 15 * 60);
+    setTokenCookie(res, newRefreshToken, 'refreshToken', 7 * 24 * 60 * 60);
+
+    return { message: "Tokens refreshed successfully" };
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const verifyToken = async ({ token }) => {
-    try {
-        const user = jwt.decode(token);
-        const findUser = await User.findOne({ email: user.email });
-        if (!findUser) {
-            return Promise.reject({ error: "Unauthorized" });
-        }
-
-        //Verify Token and resolve
-        await verify(token);
-        return Promise.resolve();
-
-    } catch (error) {
-        return Promise.reject({ error: "Unauthorized" });
+export const logoutUser = async (userId, res) => {
+  try {
+    const user = await User.findById(userId);
+    if (user) {
+      user.refreshToken = null;
+      await user.save();
     }
+    
+    res.clearCookie('token');
+    res.clearCookie('refreshToken');
+    
+    return { message: 'Logged out successfully' };
+  } catch (error) {
+    throw error;
+  }
 };
 
-//getting user profile details using jwt
-export const getUserProfile = async (token) => {
-    try {
-
-        const user = jwt.decode(token);
-        const userId = user.id;
-        const userProfile = await User.findById(userId);
-
-        return Promise.resolve(userProfile);
-
-    } catch (error) {
-        return Promise.reject({ error: 'Error fetching user profile:' });
-
+export const getUserProfile = async (userId) => {
+  try {
+    const user = await User.findById(userId).select('-password -refreshToken');
+    if (!user) {
+      throw new Error('User not found');
     }
+    return user;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const getUserIDfromToken = async (token) => {
-    try {
-        const user = jwt.decode(token);
-        const userId = user.id;
-
-        return Promise.resolve(userId);
-
-    } catch (error) {
-        return Promise.reject({ error: 'Error fetching user ID:' });
+export const updateUserProfile = async (userId, updateData) => {
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error('User not found');
     }
-}
 
-export const updateUserProfile = async (editedDetails) => {
-    try {
-        const user = await User.findById(editedDetails._id);
+    const updatableFields = ['firstName', 'lastName', 'phone', 'address', 'pincode'];
+    updatableFields.forEach(field => {
+      if (updateData[field] !== undefined) {
+        user[field] = updateData[field];
+      }
+    });
 
-        if (user) {
-            user.firstName = (user.firstName !== editedDetails.firstName) ? editedDetails.firstName : user.firstName;
-            user.lastName = (user.lastName !== editedDetails.lastName) ? editedDetails.lastName : user.lastName;
-            user.phone = (user.phone !== editedDetails.phone) ? editedDetails.phone : user.phone;
-            user.address = (user.address !== editedDetails.address) ? editedDetails.address : user.address;
-            user.pincode = (user.pincode !== editedDetails.pincode) ? editedDetails.pincode : user.pincode;
-            //modify the address properties
+    const updatedUser = await user.save();
+    return updatedUser;
+  } catch (error) {
+    throw error;
+  }
+};
 
-            const updatedUser = await user.save();
-
-            return Promise.resolve(updatedUser);
-        } else {
-            return Promise.reject({ error: 'User not found' });
-        }
-    } catch (error) {
-        return Promise.reject({ message: error.message });
+export const checkAuth = async (token) => {
+  try {
+    const decoded = verify(token);
+    const user = await User.findById(decoded.id).select('-password -refreshToken');
+    if (!user) {
+      throw new Error('User not found');
     }
+    return { isAuthenticated: true, user };
+  } catch (error) {
+    throw error;
+  }
 };
