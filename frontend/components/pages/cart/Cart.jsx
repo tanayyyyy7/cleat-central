@@ -1,4 +1,3 @@
-// Cart.jsx
 import React, { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -86,7 +85,7 @@ export default function Cart() {
   if (!isLoggedIn) {
     return (
       <Layout>
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md bg-background/50 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-center">Please Log In</CardTitle>
           </CardHeader>
@@ -97,7 +96,7 @@ export default function Cart() {
             <p className="text-center text-muted-foreground">You need to be logged in to view your cart.</p>
           </CardContent>
           <CardFooter className="flex justify-center">
-            <Button onClick={() => navigate('/login-user')}>Head to Log In</Button>
+            <Button onClick={() => navigate('/login-user')} className="bg-primary hover:bg-primary/90 text-primary-foreground">Head to Log In</Button>
           </CardFooter>
         </Card>
       </Layout>
@@ -107,7 +106,7 @@ export default function Cart() {
   if (!cart || cart.length === 0) {
     return (
       <Layout>
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md bg-background/50 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-center">Your Cart is Empty</CardTitle>
           </CardHeader>
@@ -118,7 +117,7 @@ export default function Cart() {
             <p className="text-center mt-4 text-muted-foreground">Looks like you haven't added any items to your cart yet.</p>
           </CardContent>
           <CardFooter className="flex justify-center">
-            <Button onClick={() => navigate('/products-page')}>Start Shopping</Button>
+            <Button onClick={() => navigate('/products-page')} className="bg-primary hover:bg-primary/90 text-primary-foreground">Start Shopping</Button>
           </CardFooter>
         </Card>
       </Layout>
@@ -129,9 +128,7 @@ export default function Cart() {
     navigate(`/product-details/${productId}`);
   };
 
-  //Compute the total price: no dis as of now
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
- 
 
   return (
     <Layout>
@@ -140,7 +137,7 @@ export default function Cart() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             {cart.map((item) => (
-              <Card key={`${item.productId}-${item.size}`} className="overflow-hidden">
+              <Card key={`${item.productId}-${item.size}`} className="overflow-hidden bg-background/50 backdrop-blur-sm">
                 <div className="flex flex-col sm:flex-row">
                   <div className="w-full h-48 sm:w-1/3">
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover" onClick={() => handleItemClick(item.productId)}/>
@@ -186,7 +183,7 @@ export default function Cart() {
             ))}
           </div>
           <div>
-            <Card className="sticky top-24">
+            <Card className="sticky top-24 bg-background/50 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Order Summary</CardTitle>
               </CardHeader>
@@ -208,7 +205,7 @@ export default function Cart() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Proceed to Checkout</Button>
+                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">Proceed to Checkout</Button>
               </CardFooter>
             </Card>
           </div>
@@ -219,15 +216,13 @@ export default function Cart() {
 }
 
 const Layout = ({ children }) => (
-  <>
-    <header className="sticky top-0 z-50 border-b bg-background px-4">
+  <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-secondary">
+    <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b">
       <NavBar />
     </header>
-    <div className="min-h-screen flex flex-col mx-4">
-      <div className="flex-grow flex items-center justify-center">
-        {children}
-      </div>
+    <div className="flex-grow flex items-center justify-center px-4">
+      {children}
     </div>
     <Footer />
-  </>
+  </div>
 );

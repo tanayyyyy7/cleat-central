@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, SlidersHorizontal } from 'lucide-react';
@@ -26,7 +26,6 @@ export default function ProductsPage() {
     surfaceTypes: [],
     shoeHeights: [],
   });
-
 
   useEffect(() => {
     axios.get('/api/products/catalogue')
@@ -89,7 +88,6 @@ export default function ProductsPage() {
     }
 
     setFilteredList(sortedProducts);
-    
   };
 
   const handleCardClick = (productId) => {
@@ -101,18 +99,18 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-50 border-b bg-background px-4">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-secondary">
+      <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b">
         <NavBar />
       </header>
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-grow container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
           <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
             <SheetContent side="left" className="w-[300px] sm:w-[400px]">
               <FilterContent onFilterChange={handleFilterChange} />
             </SheetContent>
           </Sheet>
-          <aside className="hidden md:block md:w-64 p-4 border rounded-md">
+          <aside className="hidden md:block md:w-64 p-4 border rounded-md bg-background/50 backdrop-blur-sm">
             <FilterContent onFilterChange={handleFilterChange} />
           </aside>
           <div className="flex-1">
@@ -144,19 +142,19 @@ export default function ProductsPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {isLoading ? (
-                // Display skeleton loading while fetching data
                 Array.from({ length: 6 }).map((_, index) => (
                   <ProductCardSkeleton key={index} />
                 ))
               ) : filteredList.length > 0 ? (
                 filteredList.map((product) => (
-                  <Card key={product._id} className="flex flex-col p-4" onClick={() => handleCardClick(product._id)}>
-                    <img className="w-full h-auto bg-muted rounded-md mb-4" src={product.image} alt={product.name} loading="lazy" />
-                    <div className="text-left">
-                      <p className="font-semibold">{product.name}</p>
+                  <Card key={product._id} className="overflow-hidden transition-all duration-300 hover:shadow-lg" onClick={() => handleCardClick(product._id)}>
+                    <img className="w-full h-64 object-cover" src={product.image} alt={product.name} loading="lazy" />
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold">{product.name}</h3>
                       <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} Football Boot</p>
                       <p className="font-bold mt-2">Rs. {product.price}.00</p>
-                    </div>
+                      <Button className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground">View Details</Button>
+                    </CardContent>
                   </Card>
                 ))
               ) : (
@@ -168,72 +166,5 @@ export default function ProductsPage() {
       </main>
      <Footer />
     </div>
-  );
-}
-
-function NikeLogo(props) {
-  return (
-    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" role="img" width="24px" height="24px" fill="none" {...props}>
-      <path fill="currentColor" fillRule="evenodd" d="M21 8.719L7.836 14.303C6.74 14.768 5.818 15 5.075 15c-.836 0-1.445-.295-1.819-.884-.485-.76-.273-1.982.559-3.272.494-.754 1.122-1.446 1.734-2.108-.144.234-1.415 2.349-.025 3.345.275.2.666.298 1.147.298.386 0 .829-.063 1.316-.19L21 8.719z" clipRule="evenodd" />
-    </svg>
-  );
-}
-
-function FacebookIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
-  );
-}
-
-function InstagramIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-    </svg>
-  );
-}
-
-function TwitterIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-    </svg>
   );
 }

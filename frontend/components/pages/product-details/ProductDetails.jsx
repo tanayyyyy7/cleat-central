@@ -1,10 +1,9 @@
-// ProductDetails.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, ChevronDown, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import NavBar from '../shared-components/NavBar';
 import ProductCarousel from './ProductCarousel';
 import { useCart } from '../../context/CartContext';
@@ -91,12 +90,22 @@ export default function ProductDetails() {
   };
 
   if (!product) {
-    return <Loader2 className="mr-2 h-1/2 w-1/2 animate-spin" />;
+    return (
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-secondary">
+        <NavBar />
+        <div className="flex-grow flex items-center justify-center">
+          <Loader2 className="h-16 w-16 animate-spin" />
+        </div>
+        <Footer />
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <NavBar />
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-secondary">
+      <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b">
+        <NavBar />
+      </header>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="lg:w-2/3">
@@ -125,7 +134,7 @@ export default function ProductDetails() {
                 ))}
               </div>
             </div>
-            <Button className="w-full text-lg py-6" onClick={handleAddToCart}>Add to Bag</Button>
+            <Button className="w-full text-lg py-6 bg-primary hover:bg-primary/90 text-primary-foreground" onClick={handleAddToCart}>Add to Bag</Button>
             <div className="space-y-4">
               <p>
                 <span className='block italic'>{product.brand} says: </span>
@@ -144,23 +153,35 @@ export default function ProductDetails() {
             <TabsTrigger value="shipping">Shipping & Returns</TabsTrigger>
           </TabsList>
           <TabsContent value="reviews" className="mt-6">
-            <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
-            <p>No reviews yet. Be the first to review this product!</p>
+            <Card className="bg-background/50 backdrop-blur-sm">
+              <CardContent>
+                <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
+                <p>No reviews yet. Be the first to review this product!</p>
+              </CardContent>
+            </Card>
           </TabsContent>
           <TabsContent value="details" className="mt-6">
-            <h2 className="text-2xl font-bold mb-4">Product Details</h2>
-            <ul className="list-disc list-inside space-y-2">
-              <li>Brand: {product.brand}</li>
-              <li>Surface Type: {product.surfaceType}</li>
-              <li>Shoe Height: {product.shoeHeight}</li>
-              <li>Colour: {product.colour}</li>
-              <li>Availability: {product.stock?.isAvailable ? 'In Stock' : 'Out of Stock'}</li>
-            </ul>
+            <Card className="bg-background/50 backdrop-blur-sm">
+              <CardContent>
+                <h2 className="text-2xl font-bold mb-4">Product Details</h2>
+                <ul className="list-disc list-inside space-y-2">
+                  <li>Brand: {product.brand}</li>
+                  <li>Surface Type: {product.surfaceType}</li>
+                  <li>Shoe Height: {product.shoeHeight}</li>
+                  <li>Colour: {product.colour}</li>
+                  <li>Availability: {product.stock?.isAvailable ? 'In Stock' : 'Out of Stock'}</li>
+                </ul>
+              </CardContent>
+            </Card>
           </TabsContent>
           <TabsContent value="shipping" className="mt-6">
-            <h2 className="text-2xl font-bold mb-4">Shipping & Returns</h2>
-            <p>Free standard shipping on orders over ₹14,000.</p>
-            <p>You can return your order for any reason, free of charge, within 30 days.</p>
+            <Card className="bg-background/50 backdrop-blur-sm">
+              <CardContent>
+                <h2 className="text-2xl font-bold mb-4">Shipping & Returns</h2>
+                <p>Free standard shipping on orders over ₹14,000.</p>
+                <p>You can return your order for any reason, free of charge, within 30 days.</p>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

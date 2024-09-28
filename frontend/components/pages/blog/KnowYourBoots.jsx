@@ -5,13 +5,16 @@ import NavBar from '../shared-components/NavBar';
 import Footer from '../shared-components/Footer';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function KnowYourBoots() {
   return (
-    <>
-      <NavBar />
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-secondary">
+      <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b">
+        <NavBar />
+      </header>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-5xl sm:text-8xl font-bold mb-8 ">Know Your Boots</h1>
+        <h1 className="text-5xl sm:text-8xl font-bold mb-8">Know Your Boots</h1>
         <Separator className="mb-4"/>
         <nav className="mb-8">
           <ul className="flex justify-start space-x-4">
@@ -34,7 +37,7 @@ export default function KnowYourBoots() {
 
         <Element name="surface-types">
           <h2 className="text-2xl sm:text-4xl font-semibold mb-4">Surface Types</h2>
-          <div className="grid gap-6 md:grid-cols-2  mb-8">
+          <div className="grid gap-6 md:grid-cols-2 mb-8">
             <BootType
               title="FG (Firm Ground)"
               description="Designed for natural grass pitches. These boots have molded studs that provide optimal traction on firm, dry surfaces."
@@ -53,7 +56,6 @@ export default function KnowYourBoots() {
               type="surfaceType"
               value="TF"
             />
-
             <BootType
               title="IC (Indoor Court)"
               description="Designed for indoor courts or futsal. These boots have flat, non-marking rubber soles for optimal grip on smooth indoor surfaces."
@@ -82,6 +84,6 @@ export default function KnowYourBoots() {
         </Element>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
