@@ -1,4 +1,3 @@
-
 # Backend API Documentation
 
 ## Overview
@@ -14,19 +13,20 @@ This project is the backend for an e-commerce platform, offering APIs for user a
 - **cookie-parser**: Middleware for handling cookies.
 - **compression**: Middleware to gzip compress responses.
 - **cors**: Middleware for enabling CORS support.
+- **bcrypt**: A cryptographic hash function designed for password hashing and safe storing in the backend of applications in a way that is less susceptible to dictionary-based cyberattacks.
 
-## Installation & Setup
+## Backend Installation & Setup
 
-1. Clone the repository:
+1. Clone the repository's backend folder:
 
     ```bash
-    git clone https://github.com/your-repo/your-backend.git
+    git clone https://github.com/cleat-central/backend.git
     ```
 
 2. Install dependencies:
 
     ```bash
-    npm install
+    pnpm install
     ```
 
 3. Create a `.env` file in the root of the project and add the necessary environment variables. For example:
@@ -40,13 +40,43 @@ This project is the backend for an e-commerce platform, offering APIs for user a
 4. Start the development server:
 
     ```bash
-    npm run dev
+    pnpm run dev
     ```
 
 5. The server will start running at `http://localhost:3000`.
-
 ---
 
+
+## JWT-Cookie Based Authentication
+
+The backend implements **JWT (JSON Web Token) based authentication** using **HttpOnly cookies** to secure user identity and control access to protected routes. Here's how this approach strengthens the system's security and mitigates potential cyber-attacks:
+
+### How JWT-Cookie Authentication Works:
+
+1. **User Login**:
+   - Upon a successful login, a JWT is generated and stored in an HttpOnly cookie. This JWT is sent with each subsequent request to authenticate the user.
+
+2. **HttpOnly Cookies**:
+   - The JWT is stored in an HttpOnly cookie, preventing JavaScript in the browser from accessing the token. This helps mitigate **XSS (Cross-Site Scripting)** attacks, where malicious scripts attempt to steal sensitive information.
+
+3. **Stateless Authentication**:
+   - The backend is **stateless**, meaning no session data is stored on the server. Every request carries the JWT, which contains all the necessary information for authentication. This simplifies scaling, as there is no need for session storage in the database or memory.
+
+4. **Token Expiration & Refresh Tokens**:
+   - JWT tokens are short-lived for security purposes. A **refresh token** (also stored as an HttpOnly cookie) is used to issue new access tokens without requiring the user to log in again. This ensures minimal risk if the token is compromised since it expires quickly.
+
+5. **Authentication Middleware**:
+   - The **authMiddleware** checks for a valid JWT in the cookie for protected routes (e.g., cart actions, user profile updates). If no valid JWT is found, access is denied. This ensures that only authenticated users can access sensitive resources.
+
+6. **Cross-Origin Resource Sharing (CORS)**:
+   - **CORS** is configured to only allow requests from trusted domains. This reduces the risk of **CSRF (Cross-Site Request Forgery)** attacks by ensuring cookies are not sent on requests from unauthorized origins.
+
+7. **Secure Cookies**:
+   - Cookies are marked **Secure** and **SameSite** to prevent them from being sent over non-HTTPS connections or in cross-site requests. This further reduces the risk of **CSRF** attacks and protects against cookie theft.
+
+By using **JWT in HttpOnly cookies** and following security best practices, this backend creates a robust and secure authentication system that protects users from common threats without the complexity of session management.
+
+---
 ## API Endpoints
 
 ### **/api/user**
@@ -142,24 +172,3 @@ This project is the backend for an e-commerce platform, offering APIs for user a
 ├── app.js                # Main entry point of the application
 └── .env                  # Environment variables
 ```
-
----
-
-## Deployment
-
-1. Make sure to configure environment variables correctly in production.
-2. Install production dependencies:
-    ```bash
-    npm install --production
-    ```
-3. Build and start the app:
-    ```bash
-    npm run build
-    npm start
-    ```
-
----
-
-## License
-
-This project is licensed under the MIT License.
