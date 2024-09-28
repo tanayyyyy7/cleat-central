@@ -16,3 +16,9 @@ Idea: Remove the Shop Now btn from the Landing Page and something else to that s
 File: [LandingPage.jsx]
 
 Idea: Implement Skeleton Loading or lazy() for each image and some components in the app
+
+Idea: FrontEnd Documentation remaining
+
+Idea: Deploy app to a free service
+
+Idea: convert fetch queries to axios
