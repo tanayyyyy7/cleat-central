@@ -10,10 +10,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import "./BootType.css";
 
 
-
-const BootType = ({ title, description, type, value }) => {
+const BootType = ({ title, description, type, value = 'FG'  }) => {
     const [boots, setBoots] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -32,7 +32,7 @@ const BootType = ({ title, description, type, value }) => {
           setBoots(response.data.slice(0, 3)); // Get up to 3 boots
         } catch (err) {
           setError('Failed to fetch boots');
-          console.error('Error fetching boots:', err);
+         
         } finally {
           setIsLoading(false);
         }
@@ -42,19 +42,19 @@ const BootType = ({ title, description, type, value }) => {
 }, [type, value]);
 
 const handleCardClick = (productId) => {
-  navigate(`/product-details/${productId}`); // Navigate to product-details route with the product ID
+  navigate(`/product-details/${productId}`);
 };
 
 
   return (
-    <Card className="mb-6">
-      <CardHeader>
-        <CardTitle className="flex items-center">
+    <Card className="mb-6 overflow-hidden">
+      <CardHeader className={`bg-${value} py-8 `}>
+        <CardTitle className="sm:text-3xl flex items-center">
           {title}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription className='pt-4 sm:text-xl'>{description}</CardDescription>
         {boots.length > 0 && (
           <div className="mt-4">
             <h4 className="font-semibold mb-2">Featured Boots:</h4>

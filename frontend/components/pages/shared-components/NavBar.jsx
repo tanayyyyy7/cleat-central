@@ -55,7 +55,7 @@ export default function NavBar() {
     return (
         <div className="container mx-auto px-4 py-3 flex items-center justify-between border-b">
             <div className='flex items-center'> 
-            <img src={`/assets/brand-logo-${theme}.svg`} width={100} height={24} className="w-10 h-auto sm:hidden" />
+            <img src={`/assets/cleatcentral-favicon-${theme}.svg`} width={100} height={24} className="w-10 h-auto sm:hidden" />
             <img src={`/assets/cleatcentral-logo-${theme}.svg`} width={130} height={24} className="w-25 h-auto hidden sm:block" />
             </div>
             <div className="flex items-center space-x-4">
@@ -103,7 +103,7 @@ export default function NavBar() {
                     </SheetTrigger>
                     <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                         <div className="flex justify-between items-center mb-6">
-                            <NikeLogo width={60} height={24} className="w-12 h-auto" />
+                            <img src={`/assets/cleatcentral-logo-${theme}.svg`} width={130} height={24} alt="CleatCentral logo" className="w-25 h-auto" />
                         </div>
                         <MenuContent />
                     </SheetContent>

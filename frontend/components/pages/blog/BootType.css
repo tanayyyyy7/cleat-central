@@ -1,0 +1,26 @@
+/* values:
+FG, MG, TF, IC, High-Top, Low-Top
+*/
+.bg-FG, .bg-MG, .bg-TF, .bg-IC {
+    background-size: cover;
+    background-position: 70% 30%;
+    color: white; /* Text color */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); /* Black text shadow */
+}
+
+.bg-FG {
+    background-image: url("/assets/surface-types/firm-ground.jpg");
+}
+
+.bg-MG {
+    background-image: url("/assets/surface-types/multi-ground.jpg");
+}
+
+.bg-TF {
+    background-image: url("/assets/surface-types/turf.jpg");
+}
+
+.bg-IC {
+    background-image: url("/assets/surface-types/indoor-court.jpg");
+}
+

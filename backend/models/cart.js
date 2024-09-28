@@ -16,7 +16,7 @@ const CartItemSchema = new Schema({
     required: true,
     min: 1
   }
-}, { _id: false });
+});
 
 const CartSchema = new Schema({
   userId: {

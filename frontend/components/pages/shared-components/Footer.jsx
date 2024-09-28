@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Facebook, Twitter, Instagram } from 'lucide-react'
 import { useTheme } from "@/components/themeProvider"
+import { redirect } from 'react-router-dom';
 
 export default function Footer() {
     const { theme } = useTheme();
@@ -9,16 +10,16 @@ export default function Footer() {
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className='space-y-4'>
-                    <img src={`/assets/cleatcentral-logo-${theme}.svg`} width={130} height={24} className="w-25 h-auto" />
+                    <img src={`/assets/cleatcentral-logo-${theme}.svg`} width={180} height={24} className="w-25 h-auto" />
                     <p className="text-muted-foreground">Bringing you the best in class football cleats</p>
                     </div>
                     <div>
                         <h3 className="font-bold mb-4">Quick Links</h3>
                         <ul className="space-y-2">
-                            <li><Link to="/products" className="hover:underline">Products</Link></li>
-                            <li><Link to="/about" className="hover:underline">About Us</Link></li>
-                            <li><Link to="/contact" className="hover:underline">Contact</Link></li>
-                            <li><Link to="/terms" className="hover:underline">Terms of Service</Link></li>
+                            <li><Link to="#" className="hover:underline">Products</Link></li>
+                            <li><Link to="#" className="hover:underline">About Us</Link></li>
+                            <li><Link to="#" className="hover:underline">Contact</Link></li>
+                            <li><Link to="#" className="hover:underline">Terms of Service</Link></li>
                         </ul>
                     </div>
                     <div>
