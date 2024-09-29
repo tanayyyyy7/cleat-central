@@ -14,7 +14,7 @@ export default defineConfig({
     proxy: {
       "/api": {
                target: process.env.NODE_ENV === 'production' 
-                 ? "https://your-backend-url.com"
+                 ? "https://cleat-central.onrender.com"
                  : "http://localhost:3000",
                 changeOrigin: true,
                 secure: true,
