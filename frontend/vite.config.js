@@ -13,9 +13,11 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://cleat-central.onrender.com",
-        changeOrigin: true,
-        secure: true,
+               target: process.env.NODE_ENV === 'production' 
+                 ? "https://your-backend-url.com"
+                 : "http://localhost:3000",
+                changeOrigin: true,
+                secure: true,
       },
     },
   }
