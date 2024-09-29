@@ -134,11 +134,10 @@ You are deploying the **frontend build** directly into the **backend** for produ
 
    This will generate a production-ready build in the `frontend/dist` directory.
 
-2. **Move the Build to the Backend**:
-   After building the frontend, the `dist` directory will be deployed alongside the backend as static assets.
 
-3. **Deploy the Backend**:
-   Ensure the `backend` is set up to serve static files from the `frontend/dist` folder:
+3. **Serving the Frontend**:
+   After building the frontend, the `dist` directory will be deployed alongside the backend as static assets.
+   The `backend` is set up to serve static files from the `frontend/dist` folder:
    ```javascript
    app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
    app.get('*', (req, res) => {
@@ -148,7 +147,7 @@ You are deploying the **frontend build** directly into the **backend** for produ
 
    Now, your backend will serve the frontend in production, and API routes will be handled seamlessly.
 
-4. **Deployment Platform**:
+5. **Deployment Platform**:
    You are using **Render** to deploy the combined frontend and backend as a single web service. The production build is served by the backend, while API requests are routed through the same server.
 
 ### Render Deployment Example:
