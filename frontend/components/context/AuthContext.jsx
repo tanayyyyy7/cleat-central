@@ -71,8 +71,11 @@ export const AuthProvider = ({ children }) => {
     checkAuthStatus();
 
     if(isLoggedIn){
-    const authCheckInterval = setInterval(checkAuthStatus, 5 * 60 * 1000); // Check every 5 minutes
-    const tokenRefreshInterval = setInterval(refreshTokens, 14 * 60 * 1000); // Refresh every 14 minutes
+      //Every minute
+      const authCheckInterval = setInterval(checkAuthStatus, 1 * 60 * 1000); // Check every 1 minute
+    
+      // every 45 secs
+      const tokenRefreshInterval = setInterval(refreshTokens, 45 * 1000); // Refresh every 45 seconds
 
     return () => {
       clearInterval(authCheckInterval);

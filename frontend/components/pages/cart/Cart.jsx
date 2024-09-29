@@ -27,7 +27,7 @@ export default function Cart() {
   }, [isLoggedIn, fetchCart]);
 
   useEffect(() => {
-    initializeCart();
+   initializeCart();
   }, [initializeCart]);
 
   useEffect(() => {
