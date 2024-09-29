@@ -35,9 +35,20 @@ const MenuContent = () => (
 export default function NavBar() {
     const navigate = useNavigate();
     const { theme } = useTheme();
+    const [uiTheme, setUITheme] = useState(theme);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isLoggedIn, logout } = useAuth();
 
+    useEffect(() => {
+       if(theme === "system") {
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+        setUITheme(systemTheme);
+       } else {
+        setUITheme(theme);
+       }
+    },[theme]);
 
       const handleUserLogout = () => {
         logout();
@@ -48,8 +59,8 @@ export default function NavBar() {
     return (
         <div className="container mx-auto px-4 py-3 flex items-center justify-between border-b">
             <div className='flex items-center'> 
-            <img src={`/assets/cleatcentral-favicon-${theme}.svg`} width={100} height={24} className="w-10 h-auto sm:hidden" />
-            <img src={`/assets/cleatcentral-logo-${theme}.svg`} width={130} height={24} className="w-25 h-auto hidden sm:block" />
+            <img src={`/assets/cleatcentral-favicon-${uiTheme}.svg`} width={100} height={24} className="w-10 h-auto sm:hidden" />
+            <img src={`/assets/cleatcentral-logo-${uiTheme}.svg`} width={130} height={24} className="w-25 h-auto hidden sm:block" />
             </div>
             <div className="flex items-center space-x-4">
                 <nav className="hidden md:flex space-x-4">
