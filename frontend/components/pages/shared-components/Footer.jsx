@@ -1,16 +1,31 @@
+import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
 import { Facebook, Twitter, Instagram } from 'lucide-react'
 import { useTheme } from "@/components/themeProvider"
-import { redirect } from 'react-router-dom';
+
 
 export default function Footer() {
     const { theme } = useTheme();
+    const [uiTheme, setUITheme] = useState(theme);
+
+    useEffect(() => {
+        if(theme === "system") {
+         const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+         ? "dark"
+         : "light";
+         setUITheme(systemTheme);
+        } else {
+         setUITheme(theme);
+        }
+     },[theme]);
+
+
     return (
         <footer id="#contactUs" className="bg-muted border-t py-8">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className='space-y-4'>
-                    <img src={`/assets/cleatcentral-logo-${theme}.svg`} width={180} height={24} className="w-25 h-auto" />
+                    <img src={`/assets/cleatcentral-logo-${uiTheme}.svg`} width={180} height={24} className="w-25 h-auto" />
                     <p className="text-muted-foreground">Bringing you the best in class football cleats</p>
                     </div>
                     <div>

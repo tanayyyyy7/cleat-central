@@ -110,7 +110,7 @@ export default function ProductsPage() {
               <FilterContent onFilterChange={handleFilterChange} />
             </SheetContent>
           </Sheet>
-          <aside className="hidden md:block md:w-64 p-4 border rounded-md bg-background/50 backdrop-blur-sm">
+          <aside className="hidden md:block md:w-64 p-4 border rounded-md bg-background/50 backdrop-blur-[1px]">
             <FilterContent onFilterChange={handleFilterChange} />
           </aside>
           <div className="flex-1">
@@ -153,7 +153,7 @@ export default function ProductsPage() {
                       <h3 className="font-semibold">{product.name}</h3>
                       <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} Football Boot</p>
                       <p className="font-bold mt-2">Rs. {product.price}.00</p>
-                      <Button className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground">View Details</Button>
+                      {/* <Button className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground">View Details</Button> */}
                     </CardContent>
                   </Card>
                 ))

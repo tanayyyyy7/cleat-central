@@ -47,7 +47,7 @@ export default function UserLogIn() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+    <div className="min-h-screen bg-muted/50 backdrop-blur-[1px] flex items-center justify-center bg-background p-4">
       <Card className="mx-auto max-w-sm w-full">
         <CardHeader>
           <CardTitle className="text-xl">Log In</CardTitle>

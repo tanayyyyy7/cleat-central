@@ -103,7 +103,7 @@ export default function ProductDetails() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-secondary">
-      <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-50 border-b">
+      <header className="bg-background/85 backdrop-blur-sm sticky top-0 z-50 border-b">
         <NavBar />
       </header>
       <div className="container mx-auto px-4 py-8">
@@ -153,7 +153,7 @@ export default function ProductDetails() {
             <TabsTrigger value="shipping">Shipping & Returns</TabsTrigger>
           </TabsList>
           <TabsContent value="reviews" className="mt-6">
-            <Card className="bg-background/50 backdrop-blur-sm">
+            <Card className="bg-background/50 backdrop-blur-[1px]">
               <CardContent>
                 <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
                 <p>No reviews yet. Be the first to review this product!</p>
@@ -161,7 +161,7 @@ export default function ProductDetails() {
             </Card>
           </TabsContent>
           <TabsContent value="details" className="mt-6">
-            <Card className="bg-background/50 backdrop-blur-sm">
+            <Card className="bg-background/50 backdrop-blur-[1px]">
               <CardContent>
                 <h2 className="text-2xl font-bold mb-4">Product Details</h2>
                 <ul className="list-disc list-inside space-y-2">
@@ -175,7 +175,7 @@ export default function ProductDetails() {
             </Card>
           </TabsContent>
           <TabsContent value="shipping" className="mt-6">
-            <Card className="bg-background/50 backdrop-blur-sm">
+            <Card className="bg-background/50 backdrop-blur-[1px]">
               <CardContent>
                 <h2 className="text-2xl font-bold mb-4">Shipping & Returns</h2>
                 <p>Free standard shipping on orders over ₹14,000.</p>
