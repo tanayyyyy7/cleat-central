@@ -32,7 +32,6 @@ export default function UserLogIn() {
 
       if (response.ok) {
         const { user, token } = await response.json()
-        console.log(token)
         login(token)
         navigate('/products-page')
       } else {

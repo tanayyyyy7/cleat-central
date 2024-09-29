@@ -17,7 +17,6 @@ export default function App() {
     <AuthProvider>
       <CartProvider>
       <Routes>
-        
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup-user" element={<UserSignUp />} />
         <Route path="/login-user" element={<UserLogIn />} />

@@ -27,7 +27,6 @@ const MenuContent = () => (
         <a href="/" className="block text-lg hover:underline">Home</a>
         <a href="/products-page" className="block text-lg hover:underline">Catalogue</a>
         <a href="/blog" className="block text-lg hover:underline">Blog</a>
-        {/* <a href="#" className="block text-lg hover:underline">Contact Us</a> */}
     </div>
 )
 
