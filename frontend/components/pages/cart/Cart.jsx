@@ -3,19 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Minus, Plus, Trash2, ShoppingBag, UserX, Loader2, Info } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag, UserX, Loader2 } from 'lucide-react';
 import NavBar from '../shared-components/NavBar';
 import Footer from '../shared-components/Footer';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import ShippingInfo from './ShippingInfo';
 
 export default function Cart() {
   const { isLoggedIn } = useAuth();
@@ -52,7 +47,7 @@ export default function Cart() {
         )
       });
     }
-  }, [error]);
+  }, [error, toast]);
 
   const handleUpdateQuantity = async (productId, size, newQuantity) => {
     try {
@@ -134,8 +129,10 @@ export default function Cart() {
     navigate(`/product-details/${productId}`);
   };
 
+
+
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shippingCost = subtotal > 14000 ? 0 : 500; // Define your shipping cost, e.g., ₹500 if under ₹14,000
+  const shippingCost = subtotal > 14000 ? 0 : 500;
   const total = subtotal + shippingCost;
 
   return (
@@ -202,19 +199,7 @@ export default function Cart() {
                     <span>₹ {subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className='flex align-middle'>
-                     <p className='pr-1'>Shipping</p>
-                     <TooltipProvider>
-                    <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className='w-4 h-4' />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="text-sm">Free standard shipping <br/> on orders over ₹14,000.</p>
-                      </TooltipContent>
-                      </Tooltip>
-                  </TooltipProvider>
-                    </span>
+                    <ShippingInfo />
                     <span>₹ {shippingCost === 0 ? 'Free' : shippingCost.toFixed(2)}</span>
                   </div>
                   <Separator />
@@ -228,7 +213,6 @@ export default function Cart() {
                 <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">Proceed to Checkout</Button>
               </CardFooter>
             </Card>
-
           </div>
         </div>
       </div>
