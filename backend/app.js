@@ -19,7 +19,11 @@ const logFile = join(__dirname, 'server.log');
 
 app.use(compression());
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://your-frontend-url.netlify.app',
+  credentials: true,
+}));
+
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
