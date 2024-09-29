@@ -53,13 +53,11 @@ const FilterContent = ({ onFilterChange }) => {
   );
 
   return (
-    <ScrollArea className="h-[calc(100vh-4rem)]">
       <div className="space-y-4 p-4">
         {renderCheckboxGroup("Brands", ['Nike', 'Adidas', 'Puma', 'New Balance', 'Umbro'], "brands")}
         {renderCheckboxGroup("Surface Type", ['MG', 'FG', 'TF', 'SG', 'IC'], "surfaceTypes")}
         {renderCheckboxGroup("Shoe Height", ['High-Top', 'Low-Top'], "shoeHeights")}
       </div>
-    </ScrollArea>
   );
 };
 

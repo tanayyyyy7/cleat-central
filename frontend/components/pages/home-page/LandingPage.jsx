@@ -7,19 +7,29 @@ import { ModeToggle } from "@/components/mode-toggle";
 import NavBar from "../shared-components/NavBar";
 import Footer from "../shared-components/Footer";
 import { ArrowRight, ShoppingBag, Truck, RefreshCw, Facebook, Twitter, Instagram, BookOpen } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
+import ProductCardSkeleton from "../shared-components/ProductCardSkeleton";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
   useEffect(() => {
     axios.get('/api/products/featured')
       .then(res => {
         setFeaturedProducts(res.data.featuredProducts);
-        console.log(res.data.featuredProducts);
+        setIsLoading(false);
       })
       .catch(error => {
-        console.error('Error fetching products:', error);
+        setIsLoading(false);
+        toast({
+          title: 'Error fetching featured products',
+          description: error.message,
+          variant: 'destructive',
+          duration: 3000,
+        });
       });
   }, []);
 
@@ -46,11 +56,13 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="py-16 bg-background/50 backdrop-blur-[1px]">
+        <section className="py-16 bg-muted/50 backdrop-blur-[1px]">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">Featured Products</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {featuredProducts.map((product, index) => (
+              {isLoading ? (Array.from({ length: 3 }).map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))) : (featuredProducts.length !== 0 ? (featuredProducts.map((product, index) => (
                 <Card key={index} className="overflow-hidden transition-all duration-300 hover:shadow-lg" >
                   <img src={product.image} alt={product.name} className="w-full h-64 object-cover" />
                   <CardContent className="p-4">
@@ -59,14 +71,14 @@ export default function LandingPage() {
                     <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => handleCardClick(product._id)}>View Details</Button>
                   </CardContent>
                 </Card>
-              ))}
+              ))) : <p className="text-center text-xl">No featured products found</p>)}
             </div>
           </div>
         </section>
 
         <section className="py-16 bg-background/50 backdrop-blur-[1px]">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-8">Dont Know Much about Different Shoe Types?</h2>
+            <h2 className="text-3xl font-bold mb-8">Confused on finding the right cleat?</h2>
             <p className="text-xl mb-8 text-muted-foreground">Explore our comprehensive guide to football boots and find your perfect match</p>
             <Card className="bg-background/50 backdrop-blur-[1px] p-8 max-w-2xl mx-auto">
               <CardContent className="flex flex-col items-center">
@@ -85,7 +97,7 @@ export default function LandingPage() {
 
         <section className="bg-muted/50 backdrop-blur-[1px] py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us?</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="bg-background/50 backdrop-blur-[1px]">
                 <CardContent className="p-6 text-center">

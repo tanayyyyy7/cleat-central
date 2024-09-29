@@ -147,13 +147,12 @@ export default function ProductDetails() {
           </div>
         </div>
         <Tabs defaultValue="reviews" className="mt-12">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            <TabsTrigger value="details">Product Details</TabsTrigger>
-            <TabsTrigger value="shipping">Shipping & Returns</TabsTrigger>
+            <TabsTrigger value="details">Specifications</TabsTrigger>
           </TabsList>
           <TabsContent value="reviews" className="mt-6">
-            <Card className="bg-background/50 backdrop-blur-[1px]">
+            <Card className="bg-background/50 backdrop-blur-[1px] pt-6">
               <CardContent>
                 <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
                 <p>No reviews yet. Be the first to review this product!</p>
@@ -161,7 +160,7 @@ export default function ProductDetails() {
             </Card>
           </TabsContent>
           <TabsContent value="details" className="mt-6">
-            <Card className="bg-background/50 backdrop-blur-[1px]">
+            <Card className="bg-background/50 backdrop-blur-[1px] pt-6">
               <CardContent>
                 <h2 className="text-2xl font-bold mb-4">Product Details</h2>
                 <ul className="list-disc list-inside space-y-2">
@@ -171,15 +170,6 @@ export default function ProductDetails() {
                   <li>Colour: {product.colour}</li>
                   <li>Availability: {product.stock?.isAvailable ? 'In Stock' : 'Out of Stock'}</li>
                 </ul>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="shipping" className="mt-6">
-            <Card className="bg-background/50 backdrop-blur-[1px]">
-              <CardContent>
-                <h2 className="text-2xl font-bold mb-4">Shipping & Returns</h2>
-                <p>Free standard shipping on orders over ₹14,000.</p>
-                <p>You can return your order for any reason, free of charge, within 30 days.</p>
               </CardContent>
             </Card>
           </TabsContent>

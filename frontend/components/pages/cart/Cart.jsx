@@ -3,20 +3,26 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Minus, Plus, Trash2, ShoppingBag, UserX, Loader2 } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag, UserX, Loader2, Info } from 'lucide-react';
 import NavBar from '../shared-components/NavBar';
 import Footer from '../shared-components/Footer';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
-import { useToast } from "@/hooks/use-toast"
-import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Cart() {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const { cart, loading, error, removeFromCart, updateQuantity, fetchCart } = useCart();
   const { toast } = useToast();
-  const [ isInitialLoading, setIsInitialLoading ] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   const initializeCart = useCallback(async () => {
     setIsInitialLoading(true);
@@ -27,7 +33,7 @@ export default function Cart() {
   }, [isLoggedIn, fetchCart]);
 
   useEffect(() => {
-   initializeCart();
+    initializeCart();
   }, [initializeCart]);
 
   useEffect(() => {
@@ -81,7 +87,7 @@ export default function Cart() {
       </Layout>
     );
   }
-  
+
   if (!isLoggedIn) {
     return (
       <Layout>
@@ -128,7 +134,9 @@ export default function Cart() {
     navigate(`/product-details/${productId}`);
   };
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shippingCost = subtotal > 14000 ? 0 : 500; // Define your shipping cost, e.g., ₹500 if under ₹14,000
+  const total = subtotal + shippingCost;
 
   return (
     <Layout>
@@ -140,7 +148,7 @@ export default function Cart() {
               <Card key={`${item.productId}-${item.size}`} className="overflow-hidden bg-background/50 backdrop-blur-[1px]">
                 <div className="flex flex-col sm:flex-row">
                   <div className="w-full h-48 sm:w-1/3">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" onClick={() => handleItemClick(item.productId)}/>
+                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" onClick={() => handleItemClick(item.productId)} />
                   </div>
                   <div className="flex-grow p-4 flex flex-col justify-between">
                     <div>
@@ -191,11 +199,23 @@ export default function Cart() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>₹ {total.toFixed(2)}</span>
+                    <span>₹ {subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Shipping</span>
-                    <span>Free</span>
+                    <span className='flex align-middle'>
+                     <p className='pr-1'>Shipping</p>
+                     <TooltipProvider>
+                    <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className='w-4 h-4' />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="text-sm">Free standard shipping <br/> on orders over ₹14,000.</p>
+                      </TooltipContent>
+                      </Tooltip>
+                  </TooltipProvider>
+                    </span>
+                    <span>₹ {shippingCost === 0 ? 'Free' : shippingCost.toFixed(2)}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-bold">
@@ -208,6 +228,7 @@ export default function Cart() {
                 <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">Proceed to Checkout</Button>
               </CardFooter>
             </Card>
+
           </div>
         </div>
       </div>
@@ -216,13 +237,11 @@ export default function Cart() {
 }
 
 const Layout = ({ children }) => (
-  <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-secondary">
-    <header className="bg-background/85 backdrop-blur-sm sticky top-0 z-50 border-b">
+  <div className="min-h-screen min-w-screen flex flex-col bg-gradient-to-b from-background to-secondary">
+    <header className=" w-full bg-background/85 backdrop-blur-sm sticky top-0 z-50">
       <NavBar />
     </header>
-    <div className="flex-grow flex items-center justify-center px-4">
-      {children}
-    </div>
+    <main className="w-full">{children}</main>
     <Footer />
   </div>
 );

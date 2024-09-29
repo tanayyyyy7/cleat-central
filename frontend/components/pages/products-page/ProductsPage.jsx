@@ -20,6 +20,7 @@ export default function ProductsPage() {
   const [productList, setProductList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [sortBy, setSortBy] = useState('featured');
+  const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const [filters, setFilters] = useState({
     brands: [],
@@ -46,7 +47,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     applyFilters();
-  }, [filters, productList, sortBy]);
+  }, [filters, productList, sortBy, searchTerm]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -54,6 +55,13 @@ export default function ProductsPage() {
 
   const applyFilters = () => {
     let filteredProducts = productList;
+
+    // Apply search filter
+    if (searchTerm.trim() !== '') {
+      filteredProducts = filteredProducts.filter(product => 
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
 
     if (filters.brands.length > 0) {
       filteredProducts = filteredProducts.filter(product => filters.brands.includes(product.brand));
@@ -110,18 +118,24 @@ export default function ProductsPage() {
               <FilterContent onFilterChange={handleFilterChange} />
             </SheetContent>
           </Sheet>
-          <aside className="hidden md:block md:w-64 p-4 border rounded-md bg-background/50 backdrop-blur-[1px]">
+          <aside className="hidden h-fit md:sticky md:top-24 md:block md:w-64 p-4 border rounded-md bg-background/50 backdrop-blur-[1px]">
             <FilterContent onFilterChange={handleFilterChange} />
           </aside>
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4">
               <div className="flex items-center gap-2 w-full sm:w-auto">
                 <Button variant="outline" className="md:hidden" onClick={() => setIsFilterOpen(true)}>
-                  <SlidersHorizontal className="mr-2 h-4 w-4" />
+                  <SlidersHorizontal className=" mr-2 h-4 w-4" />
                   Filters
                 </Button>
                 <div className="relative flex-1 sm:flex-initial">
-                  <Input type="search" placeholder="Search" className="pl-8 w-full" />
+                  <Input 
+                    type="search" 
+                    placeholder="Search by name" 
+                    className="pl-8 w-full" 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 </div>
               </div>
@@ -153,7 +167,6 @@ export default function ProductsPage() {
                       <h3 className="font-semibold">{product.name}</h3>
                       <p className="text-sm text-muted-foreground">{product.surfaceType + " " + product.shoeHeight} Football Boot</p>
                       <p className="font-bold mt-2">Rs. {product.price}.00</p>
-                      {/* <Button className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground">View Details</Button> */}
                     </CardContent>
                   </Card>
                 ))

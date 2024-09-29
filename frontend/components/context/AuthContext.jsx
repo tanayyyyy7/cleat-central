@@ -1,3 +1,4 @@
+import { useToast } from '@/hooks/use-toast';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const login = (userData) => {
     setIsLoggedIn(true);
@@ -30,9 +32,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  //primary fn
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch('/api/user/check-auth', { 
+      const response = await fetch('/api/user/check-auth', {
         credentials: 'include',
       });
       if (response.ok) {
@@ -47,6 +50,32 @@ export const AuthProvider = ({ children }) => {
       console.error('Auth check error:', error);
       setIsLoggedIn(false);
       setUser(null);
+    }
+  };
+
+  // Same fn but checks silently and updates state if gets Unauthorized 401
+  const silentCheckAuthStatus = async () => {
+    try {
+      const response = await fetch('/api/user/check-auth', {
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (!data.isAuthenticated) {
+          setIsLoggedIn(false);
+          setUser(null);
+        }
+      } else {
+        setIsLoggedIn(false);
+        setUser(null);
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'An error occurred while checking authentication status. Please try again later.',
+        variant: 'destructive',
+        duration: 3000,
+      });
     }
   };
 
@@ -70,18 +99,18 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     checkAuthStatus();
 
-    if(isLoggedIn){
+    if (isLoggedIn) {
       //Every minute
-      const authCheckInterval = setInterval(checkAuthStatus, 1 * 60 * 1000); // Check every 1 minute
-    
-      // every 45 secs
-      const tokenRefreshInterval = setInterval(refreshTokens, 45 * 1000); // Refresh every 45 seconds
+      const authCheckInterval = setInterval(silentCheckAuthStatus, 1 * 60 * 1000);
 
-    return () => {
-      clearInterval(authCheckInterval);
-      clearInterval(tokenRefreshInterval);
-    };
-  }
+      // every 45 secs
+      const tokenRefreshInterval = setInterval(refreshTokens, 45 * 1000);
+
+      return () => {
+        clearInterval(authCheckInterval);
+        clearInterval(tokenRefreshInterval);
+      };
+    }
   }, [isLoggedIn]);
 
   return (
