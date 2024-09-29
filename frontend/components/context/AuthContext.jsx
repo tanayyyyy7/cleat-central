@@ -68,9 +68,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if(isLoggedIn){
     checkAuthStatus();
 
+    if(isLoggedIn){
     const authCheckInterval = setInterval(checkAuthStatus, 5 * 60 * 1000); // Check every 5 minutes
     const tokenRefreshInterval = setInterval(refreshTokens, 14 * 60 * 1000); // Refresh every 14 minutes
 
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
       clearInterval(tokenRefreshInterval);
     };
   }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, user, login, logout, checkAuthStatus }}>
