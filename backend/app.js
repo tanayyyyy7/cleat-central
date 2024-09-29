@@ -20,7 +20,7 @@ const logFile = join(__dirname, 'server.log');
 app.use(compression());
 
 app.use(cors({
-  origin: 'https://your-frontend-url.netlify.app',
+  origin: 'https://cleat-central-iwu8.onrender.com/',
   credentials: true,
 }));
 
