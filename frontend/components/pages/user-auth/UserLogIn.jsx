@@ -32,7 +32,7 @@ export default function UserLogIn() {
 
       if (response.ok) {
         const { user, token } = await response.json()
-        login(token)
+        login(user)
         navigate('/products-page')
       } else {
         const { error } = await response.json()

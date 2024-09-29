@@ -3,7 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nike.com</title>
+    <link id="favicon" rel="icon" href="/assets/favicon-light.ico" type="image/x-icon">
+    <title>CleatCentral</title>
+    <script>
+      // Function to set the favicon based on the current theme
+      function updateFavicon(theme) {
+        const favicon = document.getElementById('favicon');
+        if (theme === 'dark') {
+          favicon.href = 'favicon-dark.ico'; // Set to dark mode favicon
+        } else {
+          favicon.href = 'favicon-light.ico'; // Set to light mode favicon
+        }
+      }
+
+      // Detect the system's theme and update the favicon
+      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      updateFavicon(prefersDarkScheme.matches ? 'dark' : 'light');
+
+      // Add an event listener to detect theme changes dynamically
+      prefersDarkScheme.addEventListener('change', (e) => {
+        updateFavicon(e.matches ? 'dark' : 'light');
+      });
+    </script>
   </head>
   <body class="light text-foreground bg-background">
     <div id="root"></div>
