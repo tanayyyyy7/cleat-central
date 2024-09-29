@@ -19,11 +19,10 @@ const logFile = join(__dirname, 'server.log');
 
 app.use(compression());
 
-app.use(cors({
-  origin: 'https://your-frontend-url.netlify.app',
-  credentials: true,
-}));
+app.use(cors());
 
+app.use(express.static(join(__dirname, '../frontend/dist'))); // Serve the built static files of the React app
+app.use('/assets', express.static(join(__dirname, '../frontend/assets')));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -34,15 +33,10 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/user-profile', userProfileRoutes);
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(express.static(join(__dirname, '../frontend/dist')));
-  app.use('/assets', express.static(join(__dirname, '../frontend/assets')));
-  
-  // Handle all other routes and return the React app
-  app.get('*', (req, res) => {
-    res.sendFile(join(__dirname, '../frontend/dist', 'index.html'));
-  });
-}
+// Handle all other routes and return the React app
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, '../frontend/dist', 'index.html'));
+});
 
 //Implementing FIle Logger
 app.use(morgan(':method - :url - :date - :response-time ms'));
