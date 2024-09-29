@@ -13,7 +13,7 @@ const setTokenCookie = (res, token, name, maxAge) => {
   res.cookie(name, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'Lax',
     maxAge: maxAge * 1000
   });
 };
