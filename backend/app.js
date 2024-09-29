@@ -33,6 +33,16 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/user-profile', userProfileRoutes);
 
+//keep alive mechanism
+app.get('/health', (req, res) => {
+  try {
+      res.status(200).send('OK');
+  } catch (error) {
+      res.status(500).send('Service Unavailable');
+  }
+});
+
+
 // Handle all other routes and return the React app
 app.get('*', (req, res) => {
   res.sendFile(join(__dirname, '../frontend/dist', 'index.html'));
