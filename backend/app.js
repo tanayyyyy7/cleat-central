@@ -12,6 +12,8 @@ import userRoutes from './routes/api/user/index.js';
 import cartRoutes from './routes/api/cart/index.js';
 import userProfileRoutes from './routes/api/userProfile/index.js';
 
+connectToDB();
+
 const app = express();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -51,11 +53,15 @@ if(process.env.NODE_ENV === 'development'){
 );
 }
 
-
-Promise.resolve(connectToDB()).then(() => {
-  app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server is running on port ${process.env.PORT || 3000}`);
-  });
+app.use((err, req, res, next) => {
+  console.error("Error:", err);
+  res.status(500).json({ error: "Internal server error", message: err?.message });
 });
+
+// Promise.resolve(connectToDB()).then(() => {
+//   app.listen(process.env.PORT || 3000, () => {
+//     console.log(`Server is running on port ${process.env.PORT || 3000}`);
+//   });
+// });
 
 export default app;
