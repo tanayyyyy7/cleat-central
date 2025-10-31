@@ -1,2 +1,4 @@
-import app from "../backend/app.js";
-export default app;
+export default async (req, res) => {
+  const { default: app } = await import('../backend/app.js');
+  app(req, res);
+};
