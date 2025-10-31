@@ -41,7 +41,7 @@ export const addItemToCart = async (userId, item) => {
         productId: product._id,
         name: product.name,
         price: product.price,
-        image: product.images[0].src,
+        image: product.images && product.images.length > 0 ? product.images[0].src : '',
         size: item.size,
         quantity: item.quantity
       });
@@ -98,14 +98,17 @@ export const removeItemFromCart = async (userId, productId, size) => {
 
 export const clearCart = async (userId) => {
   try {
-    const cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne({ userId });
 
     if (!cart) {
-      return res.status(404).json({ error: 'Cart not found' });
+      // If cart doesn't exist, we can consider it 'cleared' and create a new one.
+      cart = new Cart({ userId, items: [] });
+      await cart.save();
+      return Promise.resolve(cart);
     }
 
     cart.items = [];
-    await Cart.findOneAndUpdate({ userId }, cart);
+    await cart.save();
 
     return Promise.resolve(cart);
   } catch (error) {
